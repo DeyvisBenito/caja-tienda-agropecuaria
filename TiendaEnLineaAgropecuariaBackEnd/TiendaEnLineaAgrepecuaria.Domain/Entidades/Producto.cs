@@ -9,9 +9,9 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
     public class Producto
     {
         public int Id { get; set; }
-        public required string Nombre { get; set; }
-        public decimal Precio { get; set; }
-        public required string UrlFoto { get; set; }
+        public required string IdUser { get; set; }
+        public int IdEstaado { get; set; }
+        public int IdCategoria { get; set; }
 
         //Faltan propiedades, solo estoy haciendo pruebas
     }

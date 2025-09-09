@@ -41,7 +41,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioUsua
             {
                 return new ResultadoRegistroUsuario 
                 {
-                    EsExitoso = true
+                    EsExitoso = true,
+                    IdUsuario = appUsuario.Id
                 };
             }
             else

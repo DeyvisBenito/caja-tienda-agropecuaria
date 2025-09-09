@@ -5,9 +5,15 @@ using System.Text;
 using System.Text.Json.Serialization;
 using TiendaEnLineaAgrepecuaria.Domain.Interfaces;
 using TiendaEnLineaAgropecuaria.Application.UseCases.AuthUseCases.AuthCommands;
+using TiendaEnLineaAgropecuaria.Application.UseCases.CategoriasUseCases.CategoriasCommands;
+using TiendaEnLineaAgropecuaria.Application.UseCases.CategoriasUseCases.CategoriasQuerys;
+using TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.TiposProductoCommands;
+using TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.TiposProductoQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.UsuariosUseCases.UsuariosCommands;
 using TiendaEnLineaAgropecuaria.Infraestructure.Datos;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth;
+using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioCategorias;
+using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipoProductos;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioUsuarios;
 using TiendaEnLineaAgropecuaria.Infraestructure.Servicios;
 
@@ -71,11 +77,26 @@ builder.Services.AddAuthentication().AddJwtBearer(opciones =>
 // Repositorios
 builder.Services.AddScoped<IRepositorioUsuarios, RepositorioUsuarios>();
 builder.Services.AddScoped<IRepositorioAuth, RepositorioAuth>();
+builder.Services.AddScoped<IRepositorioCategorias, RepositorioCategorias>();
+builder.Services.AddScoped<IRepositorioTipoProductos, RepositorioTipoProductos>();
 
 // Casos de uso
+    // Casos de uso Login y Registro
 builder.Services.AddTransient<RegistrarUsuarioConEmail>();
 builder.Services.AddTransient<LoginConEmail>();
 builder.Services.AddTransient<LoginConGoogle>();
+    // Casos de uso Categorias
+builder.Services.AddTransient<GetAllCategorias>();
+builder.Services.AddTransient<GetCategoriaById>();
+builder.Services.AddTransient<PostCategoria>();
+builder.Services.AddTransient<PutCategorias>();
+builder.Services.AddTransient<DeleteCategorias>();
+// Casos de uso TipoProducto
+builder.Services.AddTransient<GetAllTiposProducto>();
+builder.Services.AddTransient<GetTiposProductoById>();
+builder.Services.AddTransient<PostTipoProducto>();
+builder.Services.AddTransient<PutTipoProducto>();
+builder.Services.AddTransient<DeleteTipoProducto>();
 
 // Servicios extras
 builder.Services.AddTransient<CrearToken>();
@@ -84,6 +105,7 @@ builder.Services.AddTransient<GenerarPayloadDeGoogle>();
 builder.Services.AddTransient<EnviarCorreos>();
 builder.Services.AddTransient<BuscarAppUsuario>();
 builder.Services.AddTransient<ResetearPassword>();
+builder.Services.AddTransient<ServicioUsuarios>();
 
 
 var app = builder.Build();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiendaEnLineaAgrepecuaria.Domain.Entidades;
 using TiendaEnLineaAgrepecuaria.Domain.Interfaces;
+using TiendaEnLineaAgrepecuaria.Domain.ValueObjects;
 using TiendaEnLineaAgropecuaria.Application.DTOs.AuthDTOs;
 
 namespace TiendaEnLineaAgropecuaria.Application.UseCases.AuthUseCases.AuthCommands
@@ -19,7 +20,7 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.AuthUseCases.AuthComman
         }
 
         // Caso de uso Login con Email
-        public async Task<bool> Execute(CredencialesUsuarioDTO credencialesUsuarioDTO)
+        public async Task<LoginRespuestaValuesObject> Execute(CredencialesUsuarioDTO credencialesUsuarioDTO)
         {
             var usuario = new Usuario
             {
@@ -29,7 +30,7 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.AuthUseCases.AuthComman
 
             var respuesta = await repositorioAuth.LoginConEmail(usuario);
 
-            return respuesta;
+            return respuesta!;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                         Email = credencialesRegistrarConEmailDTO.Email
                     };
 
-                    var token = await crearToken.ConstruirToken(credencialesUsuarioDTO);
+                    var token = await crearToken.ConstruirToken(credencialesUsuarioDTO, resultadoRegistro.IdUsuario!);
 
                     return Ok(token);
                 }

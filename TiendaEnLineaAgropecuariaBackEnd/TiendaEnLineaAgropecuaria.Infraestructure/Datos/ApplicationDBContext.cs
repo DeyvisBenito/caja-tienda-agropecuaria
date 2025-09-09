@@ -20,8 +20,22 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Datos
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Producto.Nombre único
+            modelBuilder.Entity<TipoProducto>()
+                .HasIndex(p => p.Nombre)
+                .IsUnique();
+
+            // Categoria.Nombre único
+            modelBuilder.Entity<Categoria>()
+                .HasIndex(c => c.Nombre)
+                .IsUnique();
         }
 
-        public DbSet<Producto> Productos { get; set; }
+        public DbSet<TipoProducto> TipoProductos { get; set; }
+        public DbSet<Estado> Estados { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Bodega> Bodegas { get; set; }
+        public DbSet<Inventario> Inventarios { get; set; }
     }
 }

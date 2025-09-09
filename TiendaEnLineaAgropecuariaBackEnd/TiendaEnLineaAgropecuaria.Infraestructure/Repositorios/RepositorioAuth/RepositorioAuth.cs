@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiendaEnLineaAgrepecuaria.Domain.Entidades;
 using TiendaEnLineaAgrepecuaria.Domain.Interfaces;
+using TiendaEnLineaAgrepecuaria.Domain.ValueObjects;
 using TiendaEnLineaAgropecuaria.Application.DTOs.AuthDTOs;
 using TiendaEnLineaAgropecuaria.Infraestructure.Datos;
 using TiendaEnLineaAgropecuaria.Infraestructure.Servicios;
@@ -32,7 +33,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
 
 
         // Repositorio Login con Email
-        public async Task<bool> LoginConEmail(Usuario usuario)
+        public async Task<LoginRespuestaValuesObject> LoginConEmail(Usuario usuario)
         {
             var usuarioDB = await userManager.FindByEmailAsync(usuario.Email);
             if (usuarioDB is null)
@@ -45,16 +46,25 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
 
             if (resultado.Succeeded)
             {
-                return true;
+                var resp = new LoginRespuestaValuesObject
+                {
+                    EsExitoso = true,
+                    IdUsuario = usuarioDB.Id
+                };
+                return resp;
             }
             else
             {
-                return false;
+                var resp = new LoginRespuestaValuesObject
+                {
+                    EsExitoso = false
+                };
+                return resp;
             }
         }
 
         // Logueo con Google
-        public async Task<bool> LoginConGoogle(string credenciales)
+        public async Task<LoginRespuestaValuesObject> LoginConGoogle(string credenciales)
         {
             UserLoginInfo info;
             GoogleJsonWebSignature.Payload payload;
@@ -80,7 +90,12 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
             var usuarioDBLogin = await userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             if (usuarioDBLogin is not null)
             {
-                return true;
+                var resp = new LoginRespuestaValuesObject
+                {
+                    EsExitoso = true,
+                    IdUsuario = usuarioDBLogin.Id
+                };
+                return resp;
             }
 
             // Si no existe el correo con este google, verificamos si ya existe alguno registrado en la tabla
@@ -93,7 +108,12 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
                 {
                     throw new Exception("No se pudieron vincular las cuentas.");
                 }
-                return true;
+                var resp = new LoginRespuestaValuesObject
+                {
+                    IdUsuario = usuarioDB.Id,
+                    EsExitoso = true
+                };
+                return resp;
             }
 
             // Si no existe el correo, lo creamos y lo asignamos con el login de Google
@@ -117,7 +137,12 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
                 throw new Exception("No se pudo vincular Google con el nuevo usuario");
             }
 
-            return true;
+            var respf = new LoginRespuestaValuesObject
+            {
+                EsExitoso = true,
+                IdUsuario = nuevoUsuario.Id
+            };
+            return respf;
 
 
         }

@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
 {
-    public class Producto
+    public class Categoria
     {
         public int Id { get; set; }
         public required string IdUser { get; set; }
-        public int IdEstaado { get; set; }
-        public int IdCategoria { get; set; }
-
-        //Faltan propiedades, solo estoy haciendo pruebas
+        public int EstadoId { get; set; }
+        public required string Nombre { get; set; }
+        public Estado? Estado { get; set; }
     }
 }

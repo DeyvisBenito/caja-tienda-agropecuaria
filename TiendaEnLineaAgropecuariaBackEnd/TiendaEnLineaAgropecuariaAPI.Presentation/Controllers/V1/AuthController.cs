@@ -65,9 +65,9 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             {
                 var respuesta = await loginConEmail.Execute(credencialesUsuarioDTO);
 
-                if (respuesta)
+                if (respuesta.EsExitoso)
                 {
-                    var token = await crearToken.ConstruirToken(credencialesUsuarioDTO);
+                    var token = await crearToken.ConstruirToken(credencialesUsuarioDTO, respuesta.IdUsuario!);
                     return Ok(token);
                 }
                 else
@@ -91,7 +91,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             try
             {
                 var respuesta = await loginConGoogle.ExecuteAsync(credenciales.Credenciales!);
-                if (respuesta)
+                if (respuesta.EsExitoso)
                 {
 
                     var payload = await generarPayloadDeGoogle.DesifrarPayloadGoogle(credenciales);
@@ -100,7 +100,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                         Email = payload.Email,
                     };
 
-                    var token = await crearToken.ConstruirToken(userCredenciales);
+                    var token = await crearToken.ConstruirToken(userCredenciales, respuesta.IdUsuario!);
 
                     return Ok(token);
                 }

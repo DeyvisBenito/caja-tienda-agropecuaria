@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TiendaEnLineaAgropecuaria.Infraestructure.Datos;
 
@@ -11,9 +12,11 @@ using TiendaEnLineaAgropecuaria.Infraestructure.Datos;
 namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250909050843_Agregado de Productos, Categorias y Estados")]
+    partial class AgregadodeProductosCategoriasyEstados
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,30 +158,6 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Bodega", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EstadoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ubicacion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Bodegas");
-                });
-
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Categoria", b =>
                 {
                     b.Property<int>("Id")
@@ -187,7 +166,10 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EstadoId")
+                    b.Property<int?>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEstado")
                         .HasColumnType("int");
 
                     b.Property<string>("IdUser")
@@ -229,7 +211,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.ToTable("Estados");
                 });
 
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", b =>
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Producto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -237,58 +219,16 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BodegaId")
+                    b.Property<int?>("CategoriaId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EstadoId")
+                    b.Property<int?>("EstadoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUser")
+                    b.Property<int>("IdCategoria")
                         .HasColumnType("int");
 
-                    b.Property<string>("Marca")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TipoProductoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UrlFoto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BodegaId");
-
-                    b.HasIndex("EstadoId");
-
-                    b.HasIndex("TipoProductoId");
-
-                    b.ToTable("Inventarios");
-                });
-
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EstadoId")
+                    b.Property<int>("IdEstado")
                         .HasColumnType("int");
 
                     b.Property<string>("IdUser")
@@ -308,7 +248,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.HasIndex("Nombre")
                         .IsUnique();
 
-                    b.ToTable("TipoProductos");
+                    b.ToTable("Productos");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", b =>
@@ -437,53 +377,20 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                 {
                     b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
                         .WithMany()
-                        .HasForeignKey("EstadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EstadoId");
 
                     b.Navigation("Estado");
                 });
 
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", b =>
-                {
-                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Bodega", "Bodega")
-                        .WithMany()
-                        .HasForeignKey("BodegaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
-                        .WithMany()
-                        .HasForeignKey("EstadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", "TipoProducto")
-                        .WithMany()
-                        .HasForeignKey("TipoProductoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bodega");
-
-                    b.Navigation("Estado");
-
-                    b.Navigation("TipoProducto");
-                });
-
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", b =>
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Producto", b =>
                 {
                     b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Categoria", "Categoria")
                         .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoriaId");
 
                     b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
                         .WithMany()
-                        .HasForeignKey("EstadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EstadoId");
 
                     b.Navigation("Categoria");
 

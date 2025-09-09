@@ -26,11 +26,12 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Servicios
         }
 
         // Construir token de logueo JWT
-        public async Task<RespuestaAuthenticacionDTO> ConstruirToken(CredencialesUsuarioDTO credencialesUsuarioDTO)
+        public async Task<RespuestaAuthenticacionDTO> ConstruirToken(CredencialesUsuarioDTO credencialesUsuarioDTO, string usuarioId)
         {
             var claims = new List<Claim>
             {
-                new Claim("Email", credencialesUsuarioDTO.Email)
+                new Claim("Email", credencialesUsuarioDTO.Email),
+                new Claim("usuarioId", usuarioId)
             };
 
             var usuarioDB = await userManager.FindByEmailAsync(credencialesUsuarioDTO.Email);

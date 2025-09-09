@@ -35,7 +35,8 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.UsuariosUseCases.Usuari
             var resultadoRegistro = new RespuestaRegistroDTO
             {
                 EsExitoso = respuesta.EsExitoso,
-                Errores = respuesta.Errores
+                Errores = respuesta.Errores,
+                IdUsuario = respuesta.IdUsuario
             };
 
             return resultadoRegistro;

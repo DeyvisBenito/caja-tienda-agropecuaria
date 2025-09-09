@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiendaEnLineaAgrepecuaria.Domain.Interfaces;
+using TiendaEnLineaAgrepecuaria.Domain.ValueObjects;
+using TiendaEnLineaAgropecuaria.Application.DTOs.AuthDTOs;
 
 namespace TiendaEnLineaAgropecuaria.Application.UseCases.AuthUseCases.AuthCommands
 {
@@ -17,7 +19,7 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.AuthUseCases.AuthComman
         }
 
         // Caso de uso Login con Google
-        public async Task<bool> ExecuteAsync(string credenciales)
+        public async Task<LoginRespuestaValuesObject> ExecuteAsync(string credenciales)
         {
 
             var respuesta = await repositorioAuth.LoginConGoogle(credenciales);

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace TiendaEnLineaAgrepecuaria.Domain.ValueObjects
 {
-    public class ResultadoRegistroUsuario
+    public class LoginRespuestaValuesObject
     {
+        public string? IdUsuario { get; set; }
         public bool EsExitoso { get; set; }
-        public string IdUsuario { get; set; }
-        public List<string> Errores { get; set; } = [];
     }
 }

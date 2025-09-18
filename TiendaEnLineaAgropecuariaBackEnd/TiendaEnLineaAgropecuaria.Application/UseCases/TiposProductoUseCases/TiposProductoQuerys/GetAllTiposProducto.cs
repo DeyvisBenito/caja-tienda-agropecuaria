@@ -25,7 +25,9 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.T
                 Id = x.Id,
                 Nombre = x.Nombre,
                 Categoria = x.Categoria!.Nombre,
-                Estado = x.Estado!.Nombre
+                Estado = x.Estado!.Nombre,
+                CategoriaId = x.CategoriaId,
+                EstadoId = x.EstadoId
             }).ToList();
 
             return tiposProductoDTO;

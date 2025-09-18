@@ -9,7 +9,7 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
     public class Categoria
     {
         public int Id { get; set; }
-        public required string IdUser { get; set; }
+        public string? IdUser { get; set; }
         public int EstadoId { get; set; }
         public required string Nombre { get; set; }
         public Estado? Estado { get; set; }

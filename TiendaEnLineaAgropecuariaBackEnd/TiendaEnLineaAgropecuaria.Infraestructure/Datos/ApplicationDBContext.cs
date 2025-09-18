@@ -37,5 +37,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Datos
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Bodega> Bodegas { get; set; }
         public DbSet<Inventario> Inventarios { get; set; }
+        public DbSet<Carrito> Carritos { get; set; }
+        public DbSet<CarritoDetalle> CarritoDetalles { get; set; }
     }
 }

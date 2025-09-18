@@ -12,7 +12,12 @@
 
   <ItemGroup>
     <Folder Include="UseCases\AuthUseCases\AuthQuerys\" />
+    <Folder Include="UseCases\CarritosUseCases\CarritosCommands\" />
     <Folder Include="UseCases\UsuariosUseCases\UsuariosQuerys\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
 </Project>

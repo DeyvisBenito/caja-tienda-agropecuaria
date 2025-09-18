@@ -19,11 +19,10 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.T
             this.repositorioTipoProductos = repositorioTipoProductos;
         }
 
-        public async Task<bool> ExecuteAsync(int id, TipoProductoCreacionConUserIdDTO tipoProductoDTO)
+        public async Task<bool> ExecuteAsync(int id, TipoProductoCreacionDTO tipoProductoDTO)
         {
             var tipoProducto = new TipoProducto
             {
-                IdUser = tipoProductoDTO.IdUser,
                 Nombre = tipoProductoDTO.Nombre,
                 CategoriaId = tipoProductoDTO.CategoriaId,
                 EstadoId = tipoProductoDTO.EstadoId

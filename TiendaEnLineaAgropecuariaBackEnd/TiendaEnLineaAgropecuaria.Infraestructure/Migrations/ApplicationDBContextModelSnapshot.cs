@@ -166,6 +166,9 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.Property<int>("EstadoId")
                         .HasColumnType("int");
 
+                    b.Property<string>("IdUser")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -176,7 +179,57 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EstadoId");
+
                     b.ToTable("Bodegas");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Carrito", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carritos");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.CarritoDetalle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarritoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CarritoDetalles");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Categoria", b =>
@@ -191,7 +244,6 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdUser")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -246,10 +298,14 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.Property<int>("EstadoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUser")
-                        .HasColumnType("int");
+                    b.Property<string>("IdUser")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Marca")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -292,7 +348,6 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdUser")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -431,6 +486,17 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Bodega", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estado");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Categoria", b =>

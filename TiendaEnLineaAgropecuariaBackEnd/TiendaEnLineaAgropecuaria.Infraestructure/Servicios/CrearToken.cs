@@ -83,7 +83,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Servicios
             var urlBase = configuration["FrontEnd:urlBase"];
 
             var linkResetPassword =
-                    $"{urlBase}/resetear-password?email={Uri.EscapeDataString(credencialesUsuarioDTO.Email)}&token={Uri.EscapeDataString(token)}";
+                    $"{urlBase}/auth/resetearPassword?email={Uri.EscapeDataString(credencialesUsuarioDTO.Email)}&token={Uri.EscapeDataString(token)}";
 
             var cuerpo = $@"
                 <p>Solicitaste restablecer tu contraseña.</p>

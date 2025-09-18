@@ -18,11 +18,10 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.CategoriasUseCases.Cate
             this.repositorioCategorias = repositorioCategorias;
         }
 
-        public async Task<bool> ExecuteAsync(int id, CategoriaCreacionConUserIdDTO categoriaCreacionDTO)
+        public async Task<bool> ExecuteAsync(int id, CategoriaCreacionDTO categoriaCreacionDTO)
         {
             var categoria = new Categoria
             {
-                IdUser = categoriaCreacionDTO.UserId,
                 EstadoId = categoriaCreacionDTO.IdEstado,
                 Nombre = categoriaCreacionDTO.Nombre
             };

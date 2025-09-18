@@ -63,6 +63,11 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                 ModelState.AddModelError(string.Empty, e.Message);
                 return ValidationProblem();
             }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
         }
 
         [HttpPost]
@@ -102,7 +107,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, TipoProductoCreacionConUserIdDTO tipoProductoDTO)
+        public async Task<ActionResult> Put(int id, TipoProductoCreacionDTO tipoProductoDTO)
         {
             try
             {

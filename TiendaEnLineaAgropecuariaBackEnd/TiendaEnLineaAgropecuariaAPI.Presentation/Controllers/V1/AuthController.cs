@@ -50,8 +50,16 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
         [AllowAnonymous]
         public ActionResult ValidarToken([FromQuery] string token)
         {
-            bool respuesta = validarToken.ValidarTokenService(token);
-            return Ok(respuesta);
+            try
+            {
+                bool respuesta = validarToken.ValidarTokenService(token);
+                return Ok(respuesta);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }      
         }
 
 
@@ -77,6 +85,11 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                 }
             }
             catch (KeyNotFoundException e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
+            catch (Exception e)
             {
                 ModelState.AddModelError(string.Empty, e.Message);
                 return ValidationProblem();
@@ -139,6 +152,11 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             {
                 return Ok(new { success = false, message = e.Message });
             }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
         }
 
         // Reseteo de Password
@@ -176,6 +194,11 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             catch(KeyNotFoundException e)
             {
                 return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
             }
         }
     }

@@ -20,25 +20,29 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.Inv
 
         public async Task<List<InventarioDTO>> ExecuteAsync()
         {
-            var inventarios = await repositorioInventario.GetAllInventarios();
+            var inventarios = await repositorioInventario.Get();
             var inventarioDTO = inventarios.Select(x => new InventarioDTO
             {
                 Id = x.Id,
-                Bodega = x.Bodega!.Nombre,
-                Estado = x.Estado!.Nombre,
-                Marca = x.Marca,
+                Codigo = x.Codigo,
                 Nombre = x.Nombre,
+                TipoProductoId = x.TipoProductoId,
                 TipoProducto = x.TipoProducto!.Nombre,
-                UrlFoto = x.UrlFoto,
-                BodegaId = x.BodegaId,
-                Descripcion = x.Descripcion,
                 EstadoId = x.EstadoId,
-                Precio = x.Precio,
+                Estado = x.Estado!.Nombre,
+                SucursalId = x.SucursalId,
+                Sucursal = x.Sucursal!.Nombre,
+                Marca = x.Marca,
+                PrecioCostoPromedio = x.PrecioCostoPromedio,
+                PrecioVenta = x.PrecioVenta,
+                UrlFoto = x.UrlFoto,
+                Descripcion = x.Descripcion,
                 Stock = x.Stock,
-                TipoProductoId = x.TipoProductoId
+                UnidadMedidaId = x.UnidadMedidaId,
+                UnidadMedida = x.UnidadMedida!.Medida
             }).ToList();
 
             return inventarioDTO;
-        }
+        } 
     }
 }

@@ -23,21 +23,24 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.Inv
         {
             var inventario = new Inventario
             {
+                Codigo = inventarioDTO.Codigo,
                 IdUser = inventarioDTO.IdUser,
-                EstadoId = inventarioDTO.EstadoId,
-                TipoProductoId = inventarioDTO.TipoProductoId,
-                BodegaId = inventarioDTO.BodegaId,
-                Nombre = inventarioDTO.Nombre,
                 Marca = inventarioDTO.Marca,
+                Nombre = inventarioDTO.Nombre,
+                UrlFoto = inventarioDTO.UrlFoto,
                 Descripcion = inventarioDTO.Descripcion,
-                Precio = inventarioDTO.Precio,
-                Stock = inventarioDTO.Stock,
-                UrlFoto = inventarioDTO.UrlFoto
+                EstadoId = inventarioDTO.EstadoId,
+                SucursalId = inventarioDTO.SucursalId,
+                TipoProductoId = inventarioDTO.TipoProductoId,
+                UnidadMedidaId = inventarioDTO.UnidadMedidaId,
+                PrecioCostoPromedio = 0,
+                PrecioVenta = 0,
+                Stock = 0
             };
 
             var result = await repositorioInventario.NewInventario(inventario);
 
             return result;
-        }
+        } 
     }
 }

@@ -2,8 +2,6 @@
 
 import { useRouter } from "next/navigation";
 
-import Pagination from "@/app/ui/invoices/pagination";
-import Table from "@/app/ui/products/table";
 import { CreateProduct, ShoppingCar } from "@/app/ui/products/buttons";
 import { useValidateToken } from "@/app/lib/useValidateToken";
 import { getInventario } from "@/app/lib/api";
@@ -12,6 +10,7 @@ import { useUserRole } from "@/app/lib/decodeToken";
 
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
+import ListaProductos from "@/app/ui/products/table";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -66,7 +65,7 @@ export default function ProductsPage() {
         {role === "admin" ? <CreateProduct /> : <ShoppingCar />}
       </div>
       <div>
-        <Table
+        <ListaProductos
           inventario={respProduct}
           onDeleted={(deletedId) => {
             setRespProduct((prev: Inventario[]) =>

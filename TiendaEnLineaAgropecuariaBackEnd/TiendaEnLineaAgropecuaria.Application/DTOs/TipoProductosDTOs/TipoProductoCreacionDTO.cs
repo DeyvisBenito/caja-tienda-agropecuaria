@@ -11,10 +11,12 @@ namespace TiendaEnLineaAgropecuaria.Application.DTOs.TipoProductosDTOs
     public class TipoProductoCreacionDTO
     {
         [Required]
+        public required string Nombre { get; set; }
+        [Required]
         public int EstadoId { get; set; }
         [Required]
         public int CategoriaId { get; set; }
         [Required]
-        public required string Nombre { get; set; }
+        public int TipoMedidaId { get; set; }
     }
 }

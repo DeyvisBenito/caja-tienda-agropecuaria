@@ -18,19 +18,20 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioInve
         {
             dbContext = _dbContext;
         }
-        public async Task<IEnumerable<Inventario>> GetAllInventarios()
+
+        public async Task<IEnumerable<Inventario>> Get()
         {
             var inventarios = await dbContext.Inventarios.Include(x => x.TipoProducto)
-                .Include(x => x.Estado).Include(x => x.Bodega)
+                .Include(x => x.Estado).Include(x => x.Sucursal).Include(x => x.UnidadMedida)
                 .ToListAsync();
 
             return inventarios;
         }
 
-        public async Task<Inventario> GetInventario(int id)
+        public async Task<Inventario> GetById(int id)
         {
             var inventario = await dbContext.Inventarios.Include(x => x.TipoProducto)
-                .Include(x => x.Estado).Include(x => x.Bodega)
+                .Include(x => x.Estado).Include(x => x.Sucursal).Include(x => x.UnidadMedida)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (inventario is null)
             {
@@ -40,11 +41,23 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioInve
             return inventario;
         }
 
+        public async Task<Inventario> GetByCodigo(string codigo, int sucursalId)
+        {
+            var inventario = await dbContext.Inventarios.Include(x => x.TipoProducto)
+                .Include(x => x.Estado).Include(x => x.Sucursal).Include(x => x.UnidadMedida)
+                .FirstOrDefaultAsync(x => x.Codigo == codigo && x.SucursalId == sucursalId);
+            if (inventario is null)
+            {
+                throw new KeyNotFoundException("Producto en inventario no encontrado en la sucursal actual");
+            }
+
+            return inventario;
+        }
+        
         public async Task<bool> NewInventario(Inventario inventario)
         {
-            var nombre = inventario.Nombre.ToLower();
             var inventarioDB = await dbContext.Inventarios
-                    .AnyAsync(x => x.Nombre.ToLower() == nombre && x.BodegaId == inventario.BodegaId);
+                    .AnyAsync(x => x.Codigo == inventario.Codigo && x.SucursalId == inventario.SucursalId);
 
             if (inventarioDB)
             {
@@ -61,15 +74,10 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioInve
             {
                 throw new KeyNotFoundException("El Tipo de producto a colocar no existe");
             }
-            var bodegaDBExist = await dbContext.Bodegas.AnyAsync(x => x.Id == inventario.BodegaId);
-            if (!bodegaDBExist)
+            var sucursalDB = await dbContext.Sucursales.AnyAsync(x => x.Id == inventario.SucursalId);
+            if (!sucursalDB)
             {
-                throw new KeyNotFoundException("La bodega a colocar el inventario del producto no existe");
-            }
-            
-            if(inventario.Stock == 0)
-            {
-                inventario.EstadoId = 2;
+                throw new KeyNotFoundException("La sucursal a colocar el inventario del producto no existe");
             }
 
             dbContext.Inventarios.Add(inventario);
@@ -77,7 +85,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioInve
 
             return true;
         }
-
+        /*
         public async Task<bool> UpdateInventario(int id, Inventario inventario)
         {
             var nombre = inventario.Nombre.ToLower();
@@ -165,6 +173,6 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioInve
             await dbContext.SaveChangesAsync();
 
             return true;
-        }
+        } */
     }
 }

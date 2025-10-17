@@ -26,7 +26,8 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.T
                 IdUser = tipoProductoDTO.IdUser,
                 Nombre = tipoProductoDTO.Nombre,
                 EstadoId = tipoProductoDTO.EstadoId,
-                CategoriaId = tipoProductoDTO.CategoriaId     
+                CategoriaId = tipoProductoDTO.CategoriaId,
+                TipoMedidaId = tipoProductoDTO.TipoMedidaId
             };
 
             var result = await repositorioTipoProductos.NewTipoProducto(tipoProducto);

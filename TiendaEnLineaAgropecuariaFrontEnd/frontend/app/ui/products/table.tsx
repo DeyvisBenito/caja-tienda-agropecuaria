@@ -11,7 +11,7 @@ import { formatCurrency } from "@/app/lib/utils";
 import { Inventario } from "@/app/lib/definitions";
 import { useUserRole } from "@/app/lib/decodeToken";
 
-export default function Table({
+export default function ListaProductos({
   inventario,
   onDeleted,
 }: {
@@ -47,7 +47,11 @@ export default function Table({
               inventari.estado === "Activo" ? "text-green-600" : "text-red-600"
             }`}
           >
-            {inventari.estado}
+            {role === "admin"
+              ? inventari.estado
+              : inventari.estado === "Activo"
+              ? "Disponible"
+              : "No disponible"}
           </p>
 
           {/* Marca */}
@@ -67,7 +71,7 @@ export default function Table({
                 <DeleteProduct id={inventari.id} onDeleted={onDeleted} />
               </>
             ) : inventari.estado === "Activo" ? (
-              <AddProductoToCart id={inventari.id} />
+              <AddProductoToCart id={inventari.id} nombre={inventari.nombre} precio={inventari.precio} stock={inventari.stock}/>
             ) : (
               <NoSymbolIcon className="w-5 text-red-500" />
             )}

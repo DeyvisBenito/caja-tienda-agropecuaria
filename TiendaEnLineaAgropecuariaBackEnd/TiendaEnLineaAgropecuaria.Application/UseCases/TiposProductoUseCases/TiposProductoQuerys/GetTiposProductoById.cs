@@ -29,7 +29,9 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.T
                 Categoria = tipoProducto.Categoria!.Nombre,
                 Estado = tipoProducto.Estado!.Nombre,
                 EstadoId = tipoProducto.EstadoId,
-                CategoriaId = tipoProducto.CategoriaId
+                CategoriaId = tipoProducto.CategoriaId,
+                TipoMedidaId = tipoProducto.TipoMedidaId,
+                TipoMedida = tipoProducto.TipoMedida!.Nombre
             };
 
             return tipoProductoDTO;

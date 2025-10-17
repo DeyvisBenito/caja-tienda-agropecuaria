@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 
 import { useValidateToken } from "@/app/lib/useValidateToken";

@@ -26,8 +26,9 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.UsuariosUseCases.Usuari
             var usuario = new Usuario
             {
                 Email = credencialesRegistrarConEmailDTO.Email,
-                RecibirNotificaciones = credencialesRegistrarConEmailDTO.RecibirNotificaciones,
-                Password = credencialesRegistrarConEmailDTO.Password
+                RecibirNotificaciones = true,
+                Password = credencialesRegistrarConEmailDTO.Password,
+                SucursalId = credencialesRegistrarConEmailDTO.SucursalId
             };
 
             var respuesta = await repositorioUsuarios.RegistrarUsuarioConEmail(usuario);
@@ -36,7 +37,8 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.UsuariosUseCases.Usuari
             {
                 EsExitoso = respuesta.EsExitoso,
                 Errores = respuesta.Errores,
-                IdUsuario = respuesta.IdUsuario
+                IdUsuario = respuesta.IdUsuario,
+                SucursalId = respuesta.SucursalId
             };
 
             return resultadoRegistro;

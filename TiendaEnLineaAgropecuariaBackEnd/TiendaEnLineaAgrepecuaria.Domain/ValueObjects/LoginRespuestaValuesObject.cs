@@ -9,6 +9,8 @@ namespace TiendaEnLineaAgrepecuaria.Domain.ValueObjects
     public class LoginRespuestaValuesObject
     {
         public string? IdUsuario { get; set; }
+        public int? SucursalId { get; set; }
         public bool EsExitoso { get; set; }
+
     }
 }

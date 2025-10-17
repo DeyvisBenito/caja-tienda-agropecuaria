@@ -35,6 +35,34 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Servicios
             return usuarioId;
         }
 
+        public string? ObtenerUsuarioRol()
+        {
+            var claimUserRol = contextAccessor.HttpContext!.User.Claims.Where(x => x.Type == "rol").FirstOrDefault();
+
+            if (claimUserRol is null)
+            {
+                return null;
+            }
+
+            var usuarioId = claimUserRol.Value;
+
+            return usuarioId;
+        }
+
+        public string? ObtenerUsuarioSucursalId()
+        {
+            var claimSucursalId = contextAccessor.HttpContext!.User.Claims.Where(x => x.Type == "sucursalId").FirstOrDefault();
+
+            if (claimSucursalId is null)
+            {
+                return null;
+            }
+
+            var sucursalId = claimSucursalId.Value;
+
+            return sucursalId;
+        }
+
         public async Task<ApplicationUser?> ObtenerUsuario()
         {
             var emailClaim = contextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "email");
@@ -45,6 +73,20 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Servicios
             }
 
             var usuario = await userManager.FindByEmailAsync(emailClaim!.Value);
+
+            if (usuario is null)
+            {
+                return null;
+            }
+
+            return usuario;
+        }
+
+        public async Task<ApplicationUser?> ObtenerUsuarioById(string id)
+        {
+           
+
+            var usuario = await userManager.FindByIdAsync(id);
 
             if (usuario is null)
             {

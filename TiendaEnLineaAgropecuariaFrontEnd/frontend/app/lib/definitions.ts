@@ -4,9 +4,39 @@ export type User = {
   Password: string;
 };
 
+export type UserClaim = {
+  type: string,
+  value: string;
+}
+
+export type UsuarioGet ={
+  id: string,
+  userName: string,
+  email: string,
+  perfilCompletado: boolean,
+  recibirNotificaciones: boolean,
+  estadoId: number,
+  estado: string,
+  sucursalId: number,
+  sucursal: Sucursal | null,
+  claims: UserClaim[]
+}
+
+export type UsuarioUpdate = {
+  Email: string,
+  SucursalId: number,
+  EstadoId: number
+}
+
 export interface LoginConEmailI {
   Email: string,
   Password: string
+};
+
+export interface RegisterConEmail {
+  Email: string,
+  Password: string,
+  SucursalId: number
 };
 
 export interface RecuperarForm {
@@ -68,20 +98,40 @@ export type Categoria = {
   estadoId: number
 }
 
+export type CategoriaCreacion = {
+  IdEstado: number,
+  Nombre: string
+}
+
 export type Inventario = {
   id: number,
+  codigo: string,
   nombre: string,
-  tipoProducto?: string,
   tipoProductoId: number,
-  estado: string,
+  tipoProducto?: string,
   estadoId: number,
-  bodega?: string,
-  bodegaId: number,
+  estado: string,
+  sucursalId: number,
+  sucursal?: string,
   marca: string,
-  precio: number,
+  precioCostoPromedio: number,
+  precioVenta: number,
   urlFoto: string,
   descripcion: string,
-  stock: number
+  stock: number,
+  unidadMedidaId: number,
+  unidadMedida: string
+}
+
+export type InventarioCreacion = {
+  Codigo : string,
+  Nombre: string,
+  TipoProductoId: number,
+  EstadoId: number,
+  Marca: string,
+  Foto?: FileList,
+  Descripcion?: string,
+  UnidadMedidaId: number
 }
 
 export type TipoProducto = {
@@ -90,10 +140,12 @@ export type TipoProducto = {
   estado: string,
   estadoId: number,
   categoria: string,
-  categoriaId: number
+  categoriaId: number,
+  tipoMedidaId: number,
+  tipoMedida: string
 }
 
-export type Bodegas = {
+export type Sucursal = {
   id: number,
   nombre: string,
   ubicacion: string,
@@ -101,18 +153,147 @@ export type Bodegas = {
   estadoId: number
 }
 
-export type InventarioCreacion = {
-  Nombre : string,
-  TipoProductoId : number,
-  EstadoId : number,
-  BodegaId : number,
-  Marca : string,
-  Precio : number,
-  Descripcion?: string,
-  Stock : number,
-  Foto?: FileList 
+export type SucursalCreacion = {
+  Nombre: string,
+  Ubicacion: string,
+  EstadoId: number
 }
 
-export type CarritoSuccess = {
-  success: boolean;
+export type Carrito = {
+  id: number,
+  idUser: string
+}
+
+export type CarritoDetails = {
+  id: number,
+  carritoId: number,
+  inventarioId: number,
+  cantidad: number,
+  subTotal: number,
+  fecha: string,
+  hasConflict: boolean,
+  inventario: Inventario
+}
+
+export type CarritoDetCreacion = {
+  InventarioId: number,
+  Cantidad: number
+}
+
+export type DetalleUpdateResult = {
+  success: boolean
+}
+
+export type TipoMedida = {
+  id: number,
+  nombre: string
+}
+
+export type TipoProductoCreacion = {
+  Nombre: string,
+  EstadoId: number,
+  CategoriaId: number,
+  TipoMedidaId: number
+}
+
+export type Proveedor = {
+  id: number,
+  nit: string,
+  nombres: string,
+  apellidos: string,
+  telefono: string,
+  ubicacion: string,
+  estadoId: number,
+  estado: string
+}
+
+export type ProveedorCreacion = {
+  Nit: string,
+  Nombres: string,
+  Apellidos: string,
+  Telefono: string,
+  Ubicacion: string,
+  EstadoId: number
+}
+
+export type ProveedorCreacionNit ={
+  Nit: string
+}
+
+export type DetalleCompra = {
+  id: number,
+  compraId: number,
+  inventarioId: number,
+  inventario: Inventario,
+  estadoId: number,
+  estado: string,
+  unidadMedidaId: number,
+  unidadMedida: string,
+  cantidad: number,
+  unidadesPorCaja: number,
+  precioCosto: number,
+  fecha: string
+}
+
+export type DetalleCompraCreacion ={
+  CompraId: number,
+  InventarioId: number | undefined,
+  EstadoId: number,
+  UnidadMedidaId: number,
+  UnidadesPorCaja: number | null,
+  Cantidad: number,
+  PrecioCosto: number
+}
+
+export type Compra = {
+  id: number,
+  proveedor: Proveedor,
+  userId: string,
+  emailUser: string,
+  detallesCompra: DetalleCompra[],
+  sucursalId: number,
+  sucursal: string,
+  estadoId: number,
+  estado: string,
+  total: number,
+  fechaCreacion: string
+}
+
+export type CompraCreacion = {
+  ProveedorNit: string,
+  Total: number | undefined
+}
+
+export type CompraCreacionResp = {
+  id: number
+}
+
+export type CompraUpdate = {
+  NitProveedor: string
+}
+
+export type UnidadMedida = {
+  id: number,
+  medida: string,
+  abreviatura: string,
+  tipoMedidaId: number,
+  tipoMedida: string
+}
+
+export type Cliente = {
+  id: number,
+  nit: string,
+  nombres: string,
+  apellidos: string,
+  email: string | null,
+  telefono: string,
+  fechaRegistro: string,
+}
+
+export type ClienteCreacion = {
+  Nit: string,
+  Nombres: string,
+  Apellidos: string,
+  Email?: string,
+  Telefono: string
 }

@@ -16,11 +16,11 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.Inv
             this.repositorioInventario = repositorioInventario;
         }
 
-        public async Task<bool> ExecuteAsync(int id)
+        /*public async Task<bool> ExecuteAsync(int id)
         {
             var result = await repositorioInventario.DeleteInventario(id);
 
             return result;
-        }
+        }*/
     }
 }

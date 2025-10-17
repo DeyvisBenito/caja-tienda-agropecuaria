@@ -19,6 +19,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
     {
         private readonly GetAllInventarios getAllInventarios;
         private readonly GetInventarioById getInventarioById;
+        private readonly GetInventarioByCodigo getInventarioByCodigo;
         private readonly PostInventario postInventario;
         private readonly PutInventario putInventario;
         private readonly DeleteInventario deleteInventario;
@@ -28,13 +29,14 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
         private readonly IAlmacenadorArchivos almacenadorArchivos;
 
         public InventariosController(IAlmacenadorArchivos almacenadorArchivos, GetAllInventarios getAllInventarios,
-                                    GetInventarioById getInventarioById, PostInventario postInventario,
+                                    GetInventarioById getInventarioById,GetInventarioByCodigo getInventarioByCodigo, PostInventario postInventario,
                                     PutInventario putInventario, DeleteInventario deleteInventario, ServicioUsuarios servicioUsuarios,
                                     ApplicationDBContext dbContext)
         {
             this.almacenadorArchivos = almacenadorArchivos;
             this.getAllInventarios = getAllInventarios;
             this.getInventarioById = getInventarioById;
+            this.getInventarioByCodigo = getInventarioByCodigo;
             this.postInventario = postInventario;
             this.putInventario = putInventario;
             this.deleteInventario = deleteInventario;
@@ -79,39 +81,59 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             }
         }
 
+        [HttpGet("bycodigo/{codigo}")]
+        public async Task<ActionResult<InventarioDTO>> Get(string codigo)
+        {
+            try
+            {
+                var sucursalId = servicioUsuarios.ObtenerUsuarioSucursalId();
+                if (string.IsNullOrEmpty(sucursalId))
+                {
+                    return BadRequest("El usuario no pertenece a ninguna sucursal");
+                }
+
+                var inventario = await getInventarioByCodigo.ExecuteAsync(codigo, int.Parse(sucursalId));
+
+                return Ok(inventario);
+            }
+            catch (KeyNotFoundException e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
+        }
+
+        
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] InventarioCreacionDTO inventarioCreacionDTO)
         {
             try
             {
-                if (inventarioCreacionDTO.Stock < 0)
-                {
-                    return BadRequest("No puede agregar un producto al inventario con stock negativo");
-                }
-                if (inventarioCreacionDTO.Precio < 0)
-                {
-                    return BadRequest("No puede agregar un producto al inventario con precio negativo");
-                }
                 var idUsuario = servicioUsuarios.ObtenerUsuarioId();
                 if (idUsuario is null)
                 {
                     return BadRequest("El usuario no esta logueado");
                 }
-
+                var sucursalId = int.Parse(servicioUsuarios.ObtenerUsuarioSucursalId()!);
                 var url = await almacenadorArchivos.Almacenar(contenedor, inventarioCreacionDTO.Foto!);
 
                 var inventarioConUserId = new InventarioCreacionConUserIdDTO
                 {
                     IdUser = idUsuario,
                     UrlFoto = url,
+                    SucursalId = sucursalId,
                     Descripcion = inventarioCreacionDTO.Descripcion,
                     Marca = inventarioCreacionDTO.Marca,
                     Nombre = inventarioCreacionDTO.Nombre,
-                    BodegaId = inventarioCreacionDTO.BodegaId,
                     EstadoId = inventarioCreacionDTO.EstadoId,
-                    Precio = inventarioCreacionDTO.Precio,
-                    Stock = inventarioCreacionDTO.Stock,
-                    TipoProductoId = inventarioCreacionDTO.TipoProductoId
+                    TipoProductoId = inventarioCreacionDTO.TipoProductoId,
+                    Codigo = inventarioCreacionDTO.Codigo,
+                    UnidadMedidaId = inventarioCreacionDTO.UnidadMedidaId
                 };
 
                 var result = await postInventario.ExecuteAsync(inventarioConUserId);
@@ -131,6 +153,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             }
         }
 
+        /*
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromForm] InventarioUpdateDTO inventarioUpdate)
         {
@@ -223,6 +246,6 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                 ModelState.AddModelError(string.Empty, e.Message);
                 return ValidationProblem();
             }
-        }
+        } */
     }
 }

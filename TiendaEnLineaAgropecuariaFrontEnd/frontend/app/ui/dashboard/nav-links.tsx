@@ -5,34 +5,109 @@ import { usePathname } from "next/navigation";
 
 import clsx from "clsx";
 
-import { CubeIcon, Squares2X2Icon, PuzzlePieceIcon, BuildingStorefrontIcon  } from "@heroicons/react/24/outline";
+import {
+  CubeIcon,
+  Squares2X2Icon,
+  PuzzlePieceIcon,
+  BuildingStorefrontIcon,
+  ShoppingCartIcon,
+  ShoppingBagIcon,
+  ExclamationTriangleIcon,
+  TruckIcon,
+  UserIcon,
+  IdentificationIcon  
+} from "@heroicons/react/24/outline";
 import { useUserRole } from "@/app/lib/decodeToken";
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: "Inventarios", href: "/dashboard/product", icon: CubeIcon, onlyAdmin: false },
-  { name: "Categorias", href: "/dashboard/categorias", icon: Squares2X2Icon, onlyAdmin: true },
-  { name: "Tipos de Producto", href: "/dashboard/tiposProducto", icon: PuzzlePieceIcon, onlyAdmin: true },
-  { name: "Bodegas", href: "/dashboard/bodegas", icon: BuildingStorefrontIcon, onlyAdmin: true }
+  {
+    name: "Ventas",
+    href: "/dashboard/ventas",
+    icon: ShoppingCartIcon,
+    onlyAdmin: false,
+  },
+  {
+    name: "Compras",
+    href: "/dashboard/compras",
+    icon: ShoppingBagIcon,
+    onlyAdmin: false,
+  },
+  {
+    name: "Inventarios",
+    href: "/dashboard/product",
+    icon: CubeIcon,
+    onlyAdmin: false,
+  },
+  {
+    name: "Categorias",
+    href: "/dashboard/categorias",
+    icon: Squares2X2Icon,
+    onlyAdmin: true,
+  },
+  {
+    name: "Tipos de Producto",
+    href: "/dashboard/tiposProducto",
+    icon: PuzzlePieceIcon,
+    onlyAdmin: true,
+  },
+  {
+    name: "Perdidas",
+    href: "/dashboard/perdidas",
+    icon: ExclamationTriangleIcon,
+    onlyAdmin: false,
+  },
+  {
+    name: "Sucursales",
+    href: "/dashboard/sucursales",
+    icon: BuildingStorefrontIcon,
+    onlyAdmin: true,
+  },{
+    name: "Proveedores",
+    href: "/dashboard/proveedores",
+    icon: TruckIcon,
+    onlyAdmin: true,
+  },{
+    name: "Usuarios",
+    href: "/dashboard/usuarios",
+    icon: UserIcon,
+    onlyAdmin: true,
+  },
+  {
+    name: "Clientes",
+    href: "/dashboard/clientes",
+    icon: IdentificationIcon,
+    onlyAdmin: true,
+  },
 ];
 
 export default function NavLinks() {
   const pathname = usePathname();
   const role = useUserRole();
 
-  const linksVisibles = links.filter(link => {
-    if(role === 'admin') return true;
-
-    return !link.onlyAdmin;
-  })
+  const linksVisibles = links
+    .map((link) => ({ ...link }))
+    .filter((link) => {
+      if (role === "admin") {
+        if (
+          link.name === "Ventas" ||
+          link.name === "Compras" ||
+          link.name === "Perdidas"
+        ) {
+          link.name = "Historial " + link.name;
+        }
+        return true;
+      } else {
+        return !link.onlyAdmin;
+      }
+    });
 
   return (
     <>
       {linksVisibles.map((link) => {
         const LinkIcon = link.icon;
         return (
-          
           <Link
             key={link.name}
             href={link.href}

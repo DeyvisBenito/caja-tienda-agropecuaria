@@ -16,6 +16,7 @@ namespace TiendaEnLineaAgropecuaria.Application.DTOs.UsuariosDTOs
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string? Password { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public bool RecibirNotificaciones { get; set; }
+        public int SucursalId { get; set; }
+        public bool? RecibirNotificaciones { get; set; }
     }
 }

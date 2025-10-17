@@ -10,5 +10,6 @@ namespace TiendaEnLineaAgropecuaria.Application.DTOs.InventariosDTO
     {
         public required string UrlFoto { get; set; }
         public required string IdUser { get; set; }
+        public int SucursalId { get; set; }
     }
 }

@@ -9,11 +9,14 @@ import {
   TrashIcon,
   EyeIcon,
   ShoppingCartIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 
 import { Toaster, toast } from "sonner";
 import { deleteInventario } from "@/app/lib/api";
+import ConfirmarCompra from "../caja/confirmarCompra";
+import { useState } from "react";
+import ModalAddProductoCart from "../caja/modalAddproductoCart";
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function SeeProduct({ id }: { id: number }) {
@@ -131,7 +134,7 @@ export function DeleteProduct({
 export function ShoppingCar() {
   return (
     <Link
-      href='/dashboard/caja'
+      href="/dashboard/caja"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
       <span className="hidden md:block">Caja</span>
@@ -140,28 +143,64 @@ export function ShoppingCar() {
   );
 }
 
-export function AddProductoToCart({ id }: { id: number }) {
+export function AddProductoToCart({
+  id,
+  nombre,
+  precio,
+  stock
+}: {
+  id: number;
+  nombre: string;
+  precio: number;
+  stock: number
+}) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const total = 10; // TODO: Hacer calculo de total
   return (
-    <Link
-      href={`/dashboard/product/update/${id}`}
-      className="rounded-md border p-2 hover:bg-gray-100"
-    >
-      <div className="flex items-center">
-        <ShoppingCartIcon className="w-5" />
-        <PlusIcon className="h-4 w-4" />
-      </div>
-    </Link>
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="rounded-md border p-2 hover:bg-gray-100"
+      >
+        <div className="flex items-center">
+          <ShoppingCartIcon className="w-5" />
+          <PlusIcon className="h-4 w-4" />
+        </div>
+      </button>
+
+      <ModalAddProductoCart
+        id={id}
+        nombre={nombre}
+        precio={precio}
+        stock={stock}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
   );
 }
 
-export function ConfirmarCompra() {
+export function ButtonConfirmarCompra({
+  hasConflict,
+}: {
+  hasConflict: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Link
-      href="/dashboard/product/create"
-      className="flex h-10 items-center rounded-lg bg-green-500 px-4 text-sm font-medium text-white transition-colors hover:bg-green-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-    >
-      <span className="hidden md:block">Confirmar compra</span>
-      <ShoppingBagIcon className="h-5 md:ml-4" />
-    </Link>
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="flex h-10 items-center rounded-lg bg-green-500 px-4 text-sm font-medium text-white transition-colors hover:bg-green-200"
+      >
+        <span className="hidden md:block">Confirmar compra</span>
+        <ShoppingBagIcon className="h-5 md:ml-4" />
+      </button>
+
+      <ConfirmarCompra
+        isOpen={isOpen}
+        hasConflict={hasConflict}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
   );
 }

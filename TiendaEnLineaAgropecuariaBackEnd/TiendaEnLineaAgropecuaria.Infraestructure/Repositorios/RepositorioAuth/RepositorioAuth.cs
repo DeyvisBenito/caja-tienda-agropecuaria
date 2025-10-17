@@ -44,12 +44,17 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
             var resultado = await signInManager.CheckPasswordSignInAsync(usuarioDB,
                 usuario.Password!, lockoutOnFailure: false);
 
+            if (usuarioDB.EstadoId != (int)EstadosEnum.Activo)
+            {
+                throw new Exception("El usuario no esta activo, consulte a su administrador");
+            }
             if (resultado.Succeeded)
             {
                 var resp = new LoginRespuestaValuesObject
                 {
                     EsExitoso = true,
-                    IdUsuario = usuarioDB.Id
+                    IdUsuario = usuarioDB.Id,
+                    SucursalId = usuarioDB.SucursalId
                 };
                 return resp;
             }
@@ -93,7 +98,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
                 var resp = new LoginRespuestaValuesObject
                 {
                     EsExitoso = true,
-                    IdUsuario = usuarioDBLogin.Id
+                    IdUsuario = usuarioDBLogin.Id,
+                    SucursalId = usuarioDBLogin.SucursalId
                 };
                 return resp;
             }
@@ -111,7 +117,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
                 var resp = new LoginRespuestaValuesObject
                 {
                     IdUsuario = usuarioDB.Id,
-                    EsExitoso = true
+                    EsExitoso = true,
+                    SucursalId = usuarioDB.SucursalId
                 };
                 return resp;
             }
@@ -122,7 +129,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
                 UserName = payload.Email,
                 Email = payload.Email,
                 PerfilCompletado = false,
-                EmailConfirmed = true // porque Google ya confirmó el correo
+                EmailConfirmed = true, // porque Google ya confirmó el correo
+                SucursalId = 1 // TODO: MEJORAR ESTO, NO COMPLETADO
             };
 
             var resultado = await userManager.CreateAsync(nuevoUsuario);
@@ -140,7 +148,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
             var respf = new LoginRespuestaValuesObject
             {
                 EsExitoso = true,
-                IdUsuario = nuevoUsuario.Id
+                IdUsuario = nuevoUsuario.Id,
+                SucursalId = nuevoUsuario.SucursalId
             };
             return respf;
 
@@ -148,6 +157,6 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth
         }
 
 
-       
+
     }
 }

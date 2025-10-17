@@ -2,21 +2,21 @@
 
 import { useRouter } from "next/navigation";
 
-import { CreateProduct } from "@/app/ui/products/buttons";
-import { useValidateToken } from "@/app/lib/useValidateToken";
+import { useValidateAdmin, useValidateToken } from "@/app/lib/useValidateToken";
 import { getTiposProductos } from "@/app/lib/api";
 
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
-import { Categoria, Product, ProductsPaginated, TipoProducto } from "@/app/lib/definitions";
-import TablaCategorias from "@/app/ui/categorias/tablaCategorias";
+import { TipoProducto } from "@/app/lib/definitions";
 import TablaTiposProducto from "@/app/ui/tiposProducto/tablaTiposProducto";
+import { CreateTipoProducto } from "@/app/ui/tiposProducto/buttons";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function TiposProductoPage() {
   const router = useRouter();
   useValidateToken();
+  useValidateAdmin();
 
   // States for total and current page
   //const [total, setTotal] = useState(0);
@@ -57,7 +57,7 @@ export default function TiposProductoPage() {
         <h1 className={`text-2xl`}>Tipos de producto</h1>
       </div>
       <div className="mt-4 flex items-center gap-2 md:mt-8 text-end justify-end">
-        <CreateProduct />
+        <CreateTipoProducto />
       </div>
       <div>
         <TablaTiposProducto

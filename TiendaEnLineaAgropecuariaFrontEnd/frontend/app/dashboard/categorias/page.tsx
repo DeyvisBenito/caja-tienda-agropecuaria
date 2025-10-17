@@ -2,26 +2,27 @@
 
 import { useRouter } from "next/navigation";
 
-import { CreateProduct } from "@/app/ui/products/buttons";
-import { useValidateToken } from "@/app/lib/useValidateToken";
+import { useValidateAdmin, useValidateToken } from "@/app/lib/useValidateToken";
 import { getCategorias } from "@/app/lib/api";
 
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
-import { Categoria, Product, ProductsPaginated } from "@/app/lib/definitions";
+import { Categoria, ProductsPaginated } from "@/app/lib/definitions";
 import TablaCategorias from "@/app/ui/categorias/tablaCategorias";
+import { CreateCategoria } from "@/app/ui/categorias/buttons";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function CategoriasPage() {
   const router = useRouter();
   useValidateToken();
+  useValidateAdmin();
 
   // States for total and current page
   //const [total, setTotal] = useState(0);
   //const [page, setPage] = useState(1);
   // Products per page
-  const sizeProducts: number = 5;
+  //const sizeProducts: number = 5;
 
   const [respCategorias, setRespCategorias] = useState<any>(null);
 
@@ -56,7 +57,7 @@ export default function CategoriasPage() {
         <h1 className={`text-2xl`}>Categorias</h1>
       </div>
       <div className="mt-4 flex items-center gap-2 md:mt-8 text-end justify-end">
-        <CreateProduct />
+        <CreateCategoria />
       </div>
       <div>
         <TablaCategorias

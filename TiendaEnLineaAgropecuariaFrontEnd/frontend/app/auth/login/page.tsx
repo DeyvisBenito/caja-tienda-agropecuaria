@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "sonner";
@@ -91,19 +90,19 @@ export default function LoginPage() {
           >
             Recuperar contraseña
           </Link>
-
+          {/*
           <div className="flex items-center my-4">
             <div className="flex-1 border-t border-gray-300"></div>
             <div className="px-2 text-gray-500 text-sm">O</div>
             <div className="flex-1 border-t border-gray-300"></div>
           </div>
 
-          <Link
+           <Link
             href="/auth/register"
             className="w-full text-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg shadow-md transition-colors inline-block"
           >
             Sign Up
-          </Link>
+          </Link> */}
         </div>
       </form>
     </div>

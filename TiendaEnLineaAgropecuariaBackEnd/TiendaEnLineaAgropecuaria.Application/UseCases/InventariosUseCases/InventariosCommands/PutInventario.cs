@@ -19,7 +19,7 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.Inv
             this.repositorioInventario = repositorioInventario;
         }
 
-        public async Task<bool> ExecuteAsync(int id, InventarioCreacionDTO inventarioDTO, string urlFoto)
+       /* public async Task<bool> ExecuteAsync(int id, InventarioCreacionDTO inventarioDTO, string urlFoto)
         {
             var inventario = new Inventario
             {
@@ -37,6 +37,6 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.Inv
             var result = await repositorioInventario.UpdateInventario(id, inventario);
 
             return result;
-        }
+        } */
     }
 }

@@ -14,5 +14,6 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
         public int Cantidad { get; set; }
         public decimal SubTotal { get; set; }
         public DateTime Fecha { get; set; }
+        public Inventario? Inventario { get; set; }
     }
 }

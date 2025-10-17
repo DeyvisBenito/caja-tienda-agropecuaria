@@ -6,6 +6,7 @@ import { validateToken } from "./api";
 
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useUserRole } from "./decodeToken";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // Funcion para validar token 
@@ -46,6 +47,27 @@ export function useValidateToken() {
 
         validateTokenEffect();
     }, [router]);
+
+    return;
+}
+
+export function useValidateAdmin() {
+    const router = useRouter();
+    const role = useUserRole();
+    useEffect(() => {
+        const validarAdmin = async () => {
+            if (role === null) return; 
+            if (role !== 'admin') {
+                toast.error("No tienes acceso a este recurso", {
+                    description: "Por favor, solicita a tu gerente para acceder",
+                });
+                router.push("/dashboard/product");
+                return;
+            }
+        }
+
+        validarAdmin();
+    }, [router, role]);
 
     return;
 }

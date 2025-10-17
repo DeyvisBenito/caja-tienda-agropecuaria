@@ -21,7 +21,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipo
         public async Task<IEnumerable<TipoProducto>> GetAllTipoProductos()
         {
             var tipoProductos = await dbContext.TipoProductos.Include(x => x.Estado)
-                            .Include(x => x.Categoria).ToListAsync();
+                            .Include(x => x.Categoria).Include(x => x.TipoMedida).ToListAsync();
 
             return tipoProductos;
         }
@@ -29,7 +29,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipo
         public async Task<TipoProducto> GetTipoProducto(int id)
         {
             var tipoProducto = await dbContext.TipoProductos.Include(x => x.Estado)
-                .Include(x => x.Categoria).FirstOrDefaultAsync(x => x.Id == id);
+                .Include(x => x.Categoria).Include(x => x.TipoMedida).FirstOrDefaultAsync(x => x.Id == id);
             if (tipoProducto is null)
             {
                 throw new KeyNotFoundException("Tipo de producto no encontrado");
@@ -60,6 +60,12 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipo
                 throw new KeyNotFoundException("La Categoria a colocar no existe");
             }
 
+            var tipoMedidaDBExist = await dbContext.TiposMedida.AnyAsync(x => x.Id == tipoProducto.TipoMedidaId);
+            if (!tipoMedidaDBExist)
+            {
+                throw new KeyNotFoundException("El Tipo de Medida a colocar no existe");
+            }
+
             dbContext.TipoProductos.Add(tipoProducto);
             await dbContext.SaveChangesAsync();
 
@@ -86,6 +92,12 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipo
                 throw new KeyNotFoundException("La Categoria a colocar no existe");
             }
 
+            var tipoMedidaDBExist = await dbContext.TiposMedida.AnyAsync(x => x.Id == tipoProducto.TipoMedidaId);
+            if (!tipoMedidaDBExist)
+            {
+                throw new KeyNotFoundException("El Tipo de Medida a colocar no existe");
+            }
+
 
             if (nombre != tipoProductoDB.Nombre.ToLower())
             {
@@ -101,6 +113,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipo
             tipoProductoDB.EstadoId = tipoProducto.EstadoId;
             tipoProductoDB.CategoriaId = tipoProducto.CategoriaId;
             tipoProductoDB.Nombre = tipoProducto.Nombre;
+            tipoProductoDB.TipoMedidaId = tipoProducto.TipoMedidaId;
             await dbContext.SaveChangesAsync();
 
             return true;

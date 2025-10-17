@@ -1,9 +1,5 @@
-import {
-  UpdateProduct,
-  DeleteProduct,
-  SeeProduct,
-} from "@/app/ui/products/buttons";
 import { Categoria } from "@/app/lib/definitions";
+import { DeleteCategoria, UpdateCategoria } from "./buttons";
 
 export default function TablaCategorias({
   categorias,
@@ -38,9 +34,8 @@ export default function TablaCategorias({
                     </p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <SeeProduct id={Categoria.id} />
-                    <UpdateProduct id={Categoria.id} />
-                    <DeleteProduct id={Categoria.id} onDeleted={onDeleted} />
+                    <UpdateCategoria id={Categoria.id} />
+                    <DeleteCategoria id={Categoria.id} onDeleted={onDeleted} />
                   </div>
                 </div>
               </div>
@@ -82,9 +77,8 @@ export default function TablaCategorias({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <SeeProduct id={Categoria.id} />
-                      <UpdateProduct id={Categoria.id} />
-                      <DeleteProduct id={Categoria.id} onDeleted={onDeleted} />
+                      <UpdateCategoria id={Categoria.id} />
+                      <DeleteCategoria id={Categoria.id} onDeleted={onDeleted} />
                     </div>
                   </td>
                 </tr>

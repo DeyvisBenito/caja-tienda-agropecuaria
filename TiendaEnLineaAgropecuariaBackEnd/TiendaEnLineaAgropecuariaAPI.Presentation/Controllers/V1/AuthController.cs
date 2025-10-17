@@ -75,7 +75,8 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
 
                 if (respuesta.EsExitoso)
                 {
-                    var token = await crearToken.ConstruirToken(credencialesUsuarioDTO, respuesta.IdUsuario!);
+                    var sucursalIdToString = respuesta.SucursalId.ToString();
+                    var token = await crearToken.ConstruirToken(credencialesUsuarioDTO, respuesta.IdUsuario!, sucursalIdToString!);
                     return Ok(token);
                 }
                 else
@@ -113,7 +114,8 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                         Email = payload.Email,
                     };
 
-                    var token = await crearToken.ConstruirToken(userCredenciales, respuesta.IdUsuario!);
+                    var sucursalIdString = respuesta.SucursalId.ToString();
+                    var token = await crearToken.ConstruirToken(userCredenciales, respuesta.IdUsuario!, sucursalIdString!);
 
                     return Ok(token);
                 }

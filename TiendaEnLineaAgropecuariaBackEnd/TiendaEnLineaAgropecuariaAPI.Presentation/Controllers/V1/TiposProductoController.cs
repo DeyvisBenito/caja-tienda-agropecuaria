@@ -86,7 +86,8 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                     IdUser = idUsuario,
                     Nombre = tipoProductoCreacionDTO.Nombre,
                     CategoriaId = tipoProductoCreacionDTO.CategoriaId,
-                    EstadoId = tipoProductoCreacionDTO.EstadoId
+                    EstadoId = tipoProductoCreacionDTO.EstadoId,
+                    TipoMedidaId = tipoProductoCreacionDTO.TipoMedidaId
                 };
 
                 var result = await postTipoProducto.ExecuteAsync(tipoProductoConUserId);

@@ -155,35 +155,6 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Bodega", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EstadoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IdUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ubicacion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstadoId");
-
-                    b.ToTable("Bodegas");
-                });
-
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Carrito", b =>
                 {
                     b.Property<int>("Id")
@@ -229,6 +200,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("InventarioId");
+
                     b.ToTable("CarritoDetalles");
                 });
 
@@ -260,6 +233,316 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Cliente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nit")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Compra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProveedorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("IdUser");
+
+                    b.HasIndex("ProveedorId");
+
+                    b.HasIndex("SucursalId");
+
+                    b.ToTable("Compras");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Conversion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Equivalencia")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("ListaPrecioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnidadMedidaDestinoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnidadMedidaOrigenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListaPrecioId");
+
+                    b.HasIndex("UnidadMedidaDestinoId");
+
+                    b.HasIndex("UnidadMedidaOrigenId");
+
+                    b.ToTable("Conversiones");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleCompra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompraId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecioCosto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UnidadMedidaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UnidadesPorCaja")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompraId");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("InventarioId");
+
+                    b.HasIndex("UnidadMedidaId");
+
+                    b.ToTable("DetallesCompra");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleMovimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UnidadMedidaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventarioId");
+
+                    b.HasIndex("MovimientoId");
+
+                    b.HasIndex("UnidadMedidaId");
+
+                    b.ToTable("DetallesMovimiento");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetallePerdida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PerdidaId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecioCosto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PrecioVenta")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UnidadMedidaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventarioId");
+
+                    b.HasIndex("PerdidaId");
+
+                    b.HasIndex("UnidadMedidaId");
+
+                    b.ToTable("DetallesPerdida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleTraslado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecioCostoIda")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TrasladoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnidadMedidaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventarioId");
+
+                    b.HasIndex("TrasladoId");
+
+                    b.HasIndex("UnidadMedidaId");
+
+                    b.ToTable("DetallesTraslado");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleVenta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecioVenta")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UnidadMedidaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UnidadesPorCaja")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VentaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("InventarioId");
+
+                    b.HasIndex("UnidadMedidaId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("DetallesVenta");
+                });
+
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", b =>
                 {
                     b.Property<int>("Id")
@@ -289,8 +572,9 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BodegaId")
-                        .HasColumnType("int");
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
@@ -309,13 +593,22 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Precio")
+                    b.Property<decimal>("PrecioCostoPromedio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PrecioVenta")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoProductoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnidadMedidaId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrlFoto")
@@ -324,13 +617,313 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BodegaId");
-
                     b.HasIndex("EstadoId");
 
                     b.HasIndex("TipoProductoId");
 
+                    b.HasIndex("UnidadMedidaId");
+
+                    b.HasIndex("SucursalId", "Codigo")
+                        .IsUnique();
+
                     b.ToTable("Inventarios");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.ListaPrecio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("DescuentoPorcentaje")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ListaPrecios");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TipoMovimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoMovimientoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Movimientos");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoCompra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompraId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovimientoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompraId");
+
+                    b.HasIndex("MovimientoId");
+
+                    b.ToTable("MovimientosCompra");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoPerdida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MovimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PerdidaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovimientoId");
+
+                    b.HasIndex("PerdidaId");
+
+                    b.ToTable("MovimientosPerdida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoTraslado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MovimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrasladoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovimientoId");
+
+                    b.HasIndex("TrasladoId");
+
+                    b.ToTable("MovimientosTraslado");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoVenta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MovimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VentaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovimientoId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("MovimientosVenta");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Perdida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrecioCosto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalPrecioVenta")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("SucursalId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Perdidas");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Proveedor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ubicacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("Nit")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Proveedores");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ubicacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sucursales");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoMedida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TiposMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoMovimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TiposMovimiento");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", b =>
@@ -354,6 +947,9 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("TipoMedidaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoriaId");
@@ -363,7 +959,111 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.HasIndex("Nombre")
                         .IsUnique();
 
+                    b.HasIndex("TipoMedidaId");
+
                     b.ToTable("TipoProductos");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Traslado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SucursalDestinoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SucursalOrigenId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SucursalDestinoId");
+
+                    b.HasIndex("SucursalOrigenId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Traslados");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Abreviatura")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Medida")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoMedidaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoMedidaId");
+
+                    b.ToTable("UnidadesMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Venta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("EstadoId");
+
+                    b.HasIndex("SucursalId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ventas");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", b =>
@@ -384,6 +1084,9 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("EstadoId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -417,6 +1120,9 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SucursalId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -426,6 +1132,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EstadoId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -433,6 +1141,8 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("SucursalId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -488,15 +1198,15 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Bodega", b =>
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.CarritoDetalle", b =>
                 {
-                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", "Inventario")
                         .WithMany()
-                        .HasForeignKey("EstadoId")
+                        .HasForeignKey("InventarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Estado");
+                    b.Navigation("Inventario");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Categoria", b =>
@@ -510,11 +1220,80 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.Navigation("Estado");
                 });
 
-            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", b =>
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Cliente", b =>
                 {
-                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Bodega", "Bodega")
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
                         .WithMany()
-                        .HasForeignKey("BodegaId")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Cliente_Usuario");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Compra", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Compra_Usuario");
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Proveedor", "Proveedor")
+                        .WithMany()
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "Sucursal")
+                        .WithMany()
+                        .HasForeignKey("SucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Proveedor");
+
+                    b.Navigation("Sucursal");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Conversion", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.ListaPrecio", "ListaPrecio")
+                        .WithMany()
+                        .HasForeignKey("ListaPrecioId");
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedidaDestino")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaDestinoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedidaOrigen")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaOrigenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ListaPrecio");
+
+                    b.Navigation("UnidadMedidaDestino");
+
+                    b.Navigation("UnidadMedidaOrigen");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleCompra", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Compra", "Compra")
+                        .WithMany("DetallesCompra")
+                        .HasForeignKey("CompraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -524,17 +1303,331 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", "Inventario")
+                        .WithMany()
+                        .HasForeignKey("InventarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compra");
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("UnidadMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleMovimiento", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", "Inventario")
+                        .WithMany()
+                        .HasForeignKey("InventarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", "Movimiento")
+                        .WithMany()
+                        .HasForeignKey("MovimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("Movimiento");
+
+                    b.Navigation("UnidadMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetallePerdida", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", "Inventario")
+                        .WithMany()
+                        .HasForeignKey("InventarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Perdida", "Perdida")
+                        .WithMany()
+                        .HasForeignKey("PerdidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("Perdida");
+
+                    b.Navigation("UnidadMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleTraslado", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", "Inventario")
+                        .WithMany()
+                        .HasForeignKey("InventarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Traslado", "Traslado")
+                        .WithMany()
+                        .HasForeignKey("TrasladoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("Traslado");
+
+                    b.Navigation("UnidadMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.DetalleVenta", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", "Inventario")
+                        .WithMany()
+                        .HasForeignKey("InventarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Venta", "Venta")
+                        .WithMany("DetallesVenta")
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("UnidadMedida");
+
+                    b.Navigation("Venta");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Inventario", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "Sucursal")
+                        .WithMany()
+                        .HasForeignKey("SucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", "TipoProducto")
                         .WithMany()
                         .HasForeignKey("TipoProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bodega");
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Estado");
 
+                    b.Navigation("Sucursal");
+
                     b.Navigation("TipoProducto");
+
+                    b.Navigation("UnidadMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoMovimiento", "TipoMovimiento")
+                        .WithMany()
+                        .HasForeignKey("TipoMovimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Movimiento_Usuario");
+
+                    b.Navigation("TipoMovimiento");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoCompra", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Compra", "Compra")
+                        .WithMany()
+                        .HasForeignKey("CompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", "Movimiento")
+                        .WithMany()
+                        .HasForeignKey("MovimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compra");
+
+                    b.Navigation("Movimiento");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoPerdida", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", "Movimiento")
+                        .WithMany()
+                        .HasForeignKey("MovimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Perdida", "Perdida")
+                        .WithMany()
+                        .HasForeignKey("PerdidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movimiento");
+
+                    b.Navigation("Perdida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoTraslado", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", "Movimiento")
+                        .WithMany()
+                        .HasForeignKey("MovimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Traslado", "Traslado")
+                        .WithMany()
+                        .HasForeignKey("TrasladoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movimiento");
+
+                    b.Navigation("Traslado");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.MovimientoVenta", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Movimiento", "Movimiento")
+                        .WithMany()
+                        .HasForeignKey("MovimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Venta", "Venta")
+                        .WithMany()
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movimiento");
+
+                    b.Navigation("Venta");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Perdida", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "Sucursal")
+                        .WithMany()
+                        .HasForeignKey("SucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Perdida_Usuario");
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Sucursal");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Proveedor", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Proveedor_Usuario");
+
+                    b.Navigation("Estado");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Sucursal_Usuario");
+
+                    b.Navigation("Estado");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", b =>
@@ -551,9 +1644,113 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoMedida", "TipoMedida")
+                        .WithMany()
+                        .HasForeignKey("TipoMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Categoria");
 
                     b.Navigation("Estado");
+
+                    b.Navigation("TipoMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Traslado", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "SucursalDestino")
+                        .WithMany()
+                        .HasForeignKey("SucursalDestinoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "SucursalOrigen")
+                        .WithMany()
+                        .HasForeignKey("SucursalOrigenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Traslado_Usuario");
+
+                    b.Navigation("SucursalDestino");
+
+                    b.Navigation("SucursalOrigen");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.UnidadMedida", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoMedida", "TipoMedida")
+                        .WithMany()
+                        .HasForeignKey("TipoMedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoMedida");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Venta", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "Sucursal")
+                        .WithMany()
+                        .HasForeignKey("SucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Venta_Usuario");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Sucursal");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId");
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "Sucursal")
+                        .WithMany()
+                        .HasForeignKey("SucursalId");
+
+                    b.Navigation("Estado");
+
+                    b.Navigation("Sucursal");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Compra", b =>
+                {
+                    b.Navigation("DetallesCompra");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Venta", b =>
+                {
+                    b.Navigation("DetallesVenta");
                 });
 #pragma warning restore 612, 618
         }

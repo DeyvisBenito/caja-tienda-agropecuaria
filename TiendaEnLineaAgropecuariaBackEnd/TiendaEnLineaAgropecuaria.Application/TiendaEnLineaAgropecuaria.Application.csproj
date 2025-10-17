@@ -13,7 +13,8 @@
   <ItemGroup>
     <Folder Include="UseCases\AuthUseCases\AuthQuerys\" />
     <Folder Include="UseCases\CarritosUseCases\CarritosCommands\" />
-    <Folder Include="UseCases\UsuariosUseCases\UsuariosQuerys\" />
+    <Folder Include="UseCases\UnidadMedidaUseCases\UnidadMedidaCommands\" />
+    <Folder Include="UseCases\VentasUseCases\VentasCommands\" />
   </ItemGroup>
 
   <ItemGroup>

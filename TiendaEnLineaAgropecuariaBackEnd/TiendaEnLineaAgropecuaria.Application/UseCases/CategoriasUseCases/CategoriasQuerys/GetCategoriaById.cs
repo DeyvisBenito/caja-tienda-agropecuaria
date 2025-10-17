@@ -26,7 +26,8 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.CategoriasUseCases.Cate
             {
                 Id = categoria.Id,
                 Nombre = categoria.Nombre,
-                Estado = categoria.Estado!.Nombre
+                Estado = categoria.Estado!.Nombre,
+                EstadoId = categoria.EstadoId      
             };
 
             return categoriaDTO;

@@ -1,9 +1,6 @@
-import {
-  UpdateProduct,
-  DeleteProduct,
-  SeeProduct,
-} from "@/app/ui/products/buttons";
-import { Categoria, TipoProducto } from "@/app/lib/definitions";
+import { TipoProducto } from "@/app/lib/definitions";
+import { DeleteTipoProducto, UpdateTipoProducto } from "./buttons";
+import { estados } from "@/app/lib/utilities/estadosEnum";
 
 export default function TablaTiposProducto({
   tiposProducto,
@@ -29,19 +26,19 @@ export default function TablaTiposProducto({
                     </div>
                     <p className="text-sm text-gray-500">{tipo.nombre}</p>
                     <p className="text-sm text-gray-500">{tipo.categoria}</p>
+                    <p className="text-sm text-gray-500">{tipo.tipoMedida}</p>
                   </div>
                   <p>{tipo.nombre} </p>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p className={`text-xl font-medium ${tipo.estado === "Activo" ? "text-green-600" : "text-red-600"}`}>
+                    <p className={`text-xl font-medium ${tipo.estadoId === estados.Activo ? "text-green-600" : "text-red-600"}`}>
                       {tipo.estado}
                     </p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <SeeProduct id={tipo.id} />
-                    <UpdateProduct id={tipo.id} />
-                    <DeleteProduct id={tipo.id} onDeleted={onDeleted} />
+                    <UpdateTipoProducto id={tipo.id} />
+                    <DeleteTipoProducto id={tipo.id} onDeleted={onDeleted} />
                   </div>
                 </div>
               </div>
@@ -60,10 +57,12 @@ export default function TablaTiposProducto({
                   Categoria
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
+                  Tipo de Medida
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
                   Estado
                 </th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
+                <th>
                 </th>
               </tr>
             </thead>
@@ -84,14 +83,16 @@ export default function TablaTiposProducto({
                   <td className="whitespace-nowrap px-3 py-3">
                     {tipo.categoria}
                   </td>
-                  <td className={`whitespace-nowrap px-3 py-3 ${tipo.estado === "Activo" ? "text-green-600" : "text-red-600"}`}>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {tipo.tipoMedida}
+                  </td>
+                  <td className={`whitespace-nowrap px-3 py-3 ${tipo.estadoId === estados.Activo ? "text-green-600" : "text-red-600"}`}>
                     {tipo.estado}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <SeeProduct id={tipo.id} />
-                      <UpdateProduct id={tipo.id} />
-                      <DeleteProduct id={tipo.id} onDeleted={onDeleted} />
+                      <UpdateTipoProducto id={tipo.id} />
+                      <DeleteTipoProducto id={tipo.id} onDeleted={onDeleted} />
                     </div>
                   </td>
                 </tr>

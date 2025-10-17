@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 type JwtPayload = {
     Email: string;
     usuarioId: string;
-    role?: string;
+    rol?: string;
+    sucursalId?: string;
     exp: number;
 };
 
@@ -18,8 +19,8 @@ export function useUserRole() {
             const token = localStorage.getItem("token");
             if (token) {
                 const decoded = jwtDecode<JwtPayload>(token);
-                if (decoded.role) {
-                    setRole(decoded.role);
+                if (decoded.rol) {
+                    setRole(decoded.rol);
                 }
             }
         } catch (error) {
@@ -28,4 +29,24 @@ export function useUserRole() {
     }, []);
 
     return role;
+}
+
+export function useUserSucursal() {
+    const [sucursal, setSucursal] = useState<string | null>(null);
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const decoded = jwtDecode<JwtPayload>(token);
+                if (decoded.sucursalId) {
+                    setSucursal(decoded.sucursalId);
+                }
+            }
+        } catch (error) {
+            setSucursal(null);
+        }
+    }, []);
+
+    return sucursal;
 }

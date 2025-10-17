@@ -26,12 +26,13 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Servicios
         }
 
         // Construir token de logueo JWT
-        public async Task<RespuestaAuthenticacionDTO> ConstruirToken(CredencialesUsuarioDTO credencialesUsuarioDTO, string usuarioId)
+        public async Task<RespuestaAuthenticacionDTO> ConstruirToken(CredencialesUsuarioDTO credencialesUsuarioDTO, string usuarioId, string sucursalId)
         {
             var claims = new List<Claim>
             {
                 new Claim("Email", credencialesUsuarioDTO.Email),
-                new Claim("usuarioId", usuarioId)
+                new Claim("usuarioId", usuarioId),
+                new Claim("sucursalId", sucursalId)
             };
 
             var usuarioDB = await userManager.FindByEmailAsync(credencialesUsuarioDTO.Email);
@@ -73,9 +74,13 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Servicios
                     CredencialesUsuarioDTO credencialesUsuarioDTO)
         {
             var usuarioDB = await userManager.FindByEmailAsync(credencialesUsuarioDTO.Email);
-            if(usuarioDB is null)
+            if (usuarioDB is null)
             {
                 throw new KeyNotFoundException("Se ha enviado un correo de restablecimiento de passwrord");
+            }
+            if (usuarioDB.EstadoId != (int)EstadosEnum.Activo)
+            {
+                throw new Exception("El usuario no esta activo, consulte a su administrador");
             }
 
             var token = await userManager.GeneratePasswordResetTokenAsync(usuarioDB!);

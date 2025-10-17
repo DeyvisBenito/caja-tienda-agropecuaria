@@ -15,5 +15,7 @@ namespace TiendaEnLineaAgropecuaria.Application.DTOs.TipoProductosDTOs
         public int EstadoId { get; set; }
         public required string Categoria { get; set; }
         public int CategoriaId { get; set; }
+        public int TipoMedidaId { get; set; }
+        public  required string TipoMedida { get; set; }
     }
 }

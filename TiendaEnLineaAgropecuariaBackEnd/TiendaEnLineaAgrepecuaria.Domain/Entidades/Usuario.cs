@@ -11,5 +11,6 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
         public required string Email { get; set; }
         public string? Password { get; set; }
         public bool RecibirNotificaciones { get; set; }
+        public int SucursalId { get; set; }
     }
 }

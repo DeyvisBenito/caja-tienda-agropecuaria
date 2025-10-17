@@ -9,10 +9,11 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Interfaces
 {
     public interface IRepositorioInventario
     {
-        Task<bool> DeleteInventario(int id);
-        Task<IEnumerable<Inventario>> GetAllInventarios();
-        Task<Inventario> GetInventario(int id);
+        //Task<bool> DeleteInventario(int id);
+        Task<IEnumerable<Inventario>> Get();
+        Task<Inventario> GetById(int id);
         Task<bool> NewInventario(Inventario inventario);
-        Task<bool> UpdateInventario(int id, Inventario inventario);
+        // Task<bool> UpdateInventario(int id, Inventario inventario);
+        Task<Inventario> GetByCodigo(string codigo, int sucursalId);
     }
 }

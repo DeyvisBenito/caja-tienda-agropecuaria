@@ -22,7 +22,7 @@ namespace TiendaEnLineaAgropecuaria.Application.DTOs.InventariosDTO
         [Required]
         public required string Marca { get; set; }
         [Required]
-        public IFormFile? Foto { get; set; }
+        //public IFormFile? Foto { get; set; }
         public string? Descripcion { get; set; }
         [Required]
         public int UnidadMedidaId { get; set; }

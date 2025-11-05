@@ -120,7 +120,8 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                     return BadRequest("El usuario no esta logueado");
                 }
                 var sucursalId = int.Parse(servicioUsuarios.ObtenerUsuarioSucursalId()!);
-                var url = await almacenadorArchivos.Almacenar(contenedor, inventarioCreacionDTO.Foto!);
+                //var url = await almacenadorArchivos.Almacenar(contenedor, inventarioCreacionDTO.Foto!);
+                var url = "N/A";
 
                 var inventarioConUserId = new InventarioCreacionConUserIdDTO
                 {

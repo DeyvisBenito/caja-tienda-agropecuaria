@@ -196,7 +196,7 @@ export default function DetallesCompraPage() {
       Nombre: data.nombre,
       TipoProductoId: data.tipo,
       Descripcion: data.description,
-      Foto: data.foto,
+      Foto: "N/A",
       UnidadMedidaId: unidadMedidaId,
     };
 
@@ -448,7 +448,7 @@ export default function DetallesCompraPage() {
                 </span>
               )}
 
-              {/* Foto */}
+              {/* Foto 
               <label htmlFor="foto" className="font-medium mt-4">
                 Foto:
               </label>
@@ -463,7 +463,7 @@ export default function DetallesCompraPage() {
                 <span className="text-red-500 text-sm">
                   {errorsNuevo.foto.message as string}
                 </span>
-              )}
+              )}*/}
 
               {/* Descripción */}
               <label htmlFor="description" className="font-medium mt-4">

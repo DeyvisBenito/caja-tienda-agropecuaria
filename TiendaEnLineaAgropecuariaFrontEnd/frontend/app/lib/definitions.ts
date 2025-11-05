@@ -129,7 +129,7 @@ export type InventarioCreacion = {
   TipoProductoId: number,
   EstadoId: number,
   Marca: string,
-  Foto?: FileList,
+  Foto?: string,
   Descripcion?: string,
   UnidadMedidaId: number
 }

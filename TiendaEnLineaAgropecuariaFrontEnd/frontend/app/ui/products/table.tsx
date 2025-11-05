@@ -36,13 +36,13 @@ export default function ListaProductos({
           className="rounded-lg bg-white shadow p-4 flex flex-col"
         >
           {/* Imagen */}
-          <div className="mb-4 h-48 w-full overflow-hidden rounded-lg">
+          {/*<div className="mb-4 h-48 w-full overflow-hidden rounded-lg">
             <img
               src={inventario.urlFoto}
               alt={inventario.nombre}
               className="h-full w-full object-cover"
             />
-          </div>
+          </div>*/}
 
           {/* Nombre */}
           <h2 className="text-lg font-semibold mb-1">{inventario.nombre}</h2>

@@ -105,7 +105,7 @@ export default function ProductFillData({
             className="px-4 py-2 border border-gray-300 rounded bg-gray-100"
           />
 
-          {/* Foto */}
+          {/* Foto 
           <label className="font-medium">Foto:</label>
           <div className="h-72 w-full overflow-hidden rounded-lg">
             <img
@@ -113,7 +113,7 @@ export default function ProductFillData({
               alt={inventario.nombre}
               className="w-full max-h-72 object-contain mx-auto transition-transform duration-300 hover:scale-105"
             />
-          </div>
+          </div>*/}
 
           {/* Descripción */}
           <label className="font-medium">Descripción:</label>

@@ -101,7 +101,7 @@ export default function ComprasDetailsPage() {
           Regresar
         </button>
         <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center">
-          Descripción
+          Descripción de Compra
         </h1>
         <CompraFillData compra={compra} editable={false} />
       </div>

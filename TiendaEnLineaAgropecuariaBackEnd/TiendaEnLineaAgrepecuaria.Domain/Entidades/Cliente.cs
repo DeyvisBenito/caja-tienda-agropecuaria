@@ -16,5 +16,6 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
         public string? Email { get; set; }
         public required string Telefono { get; set; }
         public DateTime FechaRegistro { get; set; }
+        public IEnumerable<Venta> Ventas { get; set; } = new List<Venta>();
     }
 }

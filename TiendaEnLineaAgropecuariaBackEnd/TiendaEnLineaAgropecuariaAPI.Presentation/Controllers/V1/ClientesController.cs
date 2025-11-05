@@ -17,16 +17,18 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
     {
         private readonly GetAllClientes getAllClientes;
         private readonly GetClienteById getClienteById;
+        private readonly GetClienteByVentaId getClienteByVentaId;
         private readonly PostCliente postCliente;
         private readonly PutCliente putCliente;
         private readonly DeleteCliente deleteCliente;
         private readonly ServicioUsuarios servicioUsuarios;
 
-        public ClientesController(GetAllClientes getAllClientes, GetClienteById getClienteById, PostCliente postCliente,
+        public ClientesController(GetAllClientes getAllClientes, GetClienteById getClienteById, GetClienteByVentaId getClienteByVentaId, PostCliente postCliente,
                                     PutCliente putCliente, DeleteCliente deleteCliente, ServicioUsuarios servicioUsuarios)
         {
             this.getAllClientes = getAllClientes;
             this.getClienteById = getClienteById;
+            this.getClienteByVentaId = getClienteByVentaId;
             this.postCliente = postCliente;
             this.putCliente = putCliente;
             this.deleteCliente = deleteCliente;
@@ -55,6 +57,27 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
             try
             {
                 var cliente = await getClienteById.ExecuteAsync(id);
+
+                return Ok(cliente);
+            }
+            catch (KeyNotFoundException e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
+        }
+
+        [HttpGet("venta/{idVenta}")]
+        public async Task<ActionResult<ClienteDTO>> GetByVentaId(int idVenta)
+        {
+            try
+            {
+                var cliente = await getClienteByVentaId.ExecuteAsync(idVenta);
 
                 return Ok(cliente);
             }

@@ -17,5 +17,6 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
         public required string Ubicacion { get; set; }
         public int EstadoId { get; set; }
         public Estado? Estado { get; set; }
+        public IEnumerable<Compra> Compras { get; set; } = new List<Compra>();
     }
 }

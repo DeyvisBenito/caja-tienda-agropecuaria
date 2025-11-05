@@ -1,7 +1,5 @@
-import { Compra, DetalleCompra } from "@/app/lib/definitions";
+import { DetalleCompra } from "@/app/lib/definitions";
 
-import { useUserRole } from "@/app/lib/decodeToken";
-import { useRouter } from "next/navigation";
 import { DeleteDetC, UpdateDetC } from "./buttons";
 
 export default function TablaDetallesCompra({

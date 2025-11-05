@@ -509,6 +509,9 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Descuento")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("EstadoId")
                         .HasColumnType("int");
 
@@ -518,7 +521,13 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.Property<int>("InventarioId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PrecioVenta")
+                    b.Property<decimal>("PrecioVentaConDescuentoUnidadMinima")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PrecioVentaUnidadMinima")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UnidadMedidaId")
@@ -772,6 +781,49 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.ToTable("MovimientosVenta");
                 });
 
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Pago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoPagoId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPago")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalVenta")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("VentaId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Vuelto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SucursalId");
+
+                    b.HasIndex("TipoPagoId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("Pagos");
+                });
+
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Perdida", b =>
                 {
                     b.Property<int>("Id")
@@ -924,6 +976,26 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TiposMovimiento");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoPago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoPagos");
                 });
 
             modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoProducto", b =>
@@ -1565,6 +1637,40 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Movimiento");
+
+                    b.Navigation("Venta");
+                });
+
+            modelBuilder.Entity("TiendaEnLineaAgrepecuaria.Domain.Entidades.Pago", b =>
+                {
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Sucursal", "Sucursal")
+                        .WithMany()
+                        .HasForeignKey("SucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.TipoPago", "TipoPago")
+                        .WithMany()
+                        .HasForeignKey("TipoPagoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TiendaEnLineaAgropecuaria.Infraestructure.Datos.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Pago_Usuario");
+
+                    b.HasOne("TiendaEnLineaAgrepecuaria.Domain.Entidades.Venta", "Venta")
+                        .WithMany()
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sucursal");
+
+                    b.Navigation("TipoPago");
 
                     b.Navigation("Venta");
                 });

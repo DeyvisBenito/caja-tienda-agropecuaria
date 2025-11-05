@@ -58,10 +58,13 @@ namespace TiendaEnLineaAgropecuaria.Application.UseCases.VentasUseCases.VentasQu
                     UnidadMedidaId = d.UnidadMedidaId,
                     UnidadMedida = d.UnidadMedida!.Medida,
                     InventarioId = d.InventarioId,
-                    PrecioVenta = d.PrecioVenta,
+                    PrecioVenta = d.PrecioVentaUnidadMinima,
                     Cantidad = d.Cantidad,
                     Fecha = d.Fecha,
                     UnidadesPorCaja = d.UnidadesPorCaja,
+                    Descuento = d.Descuento,
+                    PrecioVentaConDescuento = d.PrecioVentaConDescuentoUnidadMinima,
+                    Total = d.Total,
 
                     Inventario = new InventarioDTO
                     {

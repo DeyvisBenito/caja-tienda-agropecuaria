@@ -20,7 +20,10 @@ namespace TiendaEnLineaAgropecuaria.Application.DTOs.DetallesVentaDTOs
         public required string UnidadMedida { get; set; }
         public int Cantidad { get; set; }
         public int? UnidadesPorCaja { get; set; }
-        public decimal PrecioVenta { get; set; }
+        public required decimal PrecioVenta { get; set; }
+        public required decimal Descuento { get; set; }
+        public required decimal Total { get; set; }
+        public required decimal PrecioVentaConDescuento { get; set; }
         public DateTime Fecha { get; set; }
     }
 }

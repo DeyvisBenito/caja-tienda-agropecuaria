@@ -40,11 +40,20 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioDetC
                     throw new KeyNotFoundException("La compra seleccionada no existe o no existe en la sucursal actual");
                 }
             }
-            
-            var detCompra = await dbContext.DetallesCompra.Include(x => x.Compra).Include(x => x.Inventario).ThenInclude(x => x!.Sucursal)
-                            .Include(x => x.Inventario).ThenInclude(x => x.TipoProducto)
-                            .Include(x => x.Inventario).ThenInclude(x => x.UnidadMedida)
-                            .Include(x => x.Estado).Include(x => x.UnidadMedida).Where(x => x.CompraId == compraId).ToListAsync();
+            else
+            {
+                var compraExist = await dbContext.Compras.AnyAsync(x => x.Id == compraId);
+                if (!compraExist)
+                {
+                    throw new KeyNotFoundException("La compra seleccionada no existe");
+                }
+            }
+
+                var detCompra = await dbContext.DetallesCompra.Include(x => x.Compra).Include(x => x.Inventario).ThenInclude(x => x!.Sucursal)
+                                .Include(x => x.Inventario).ThenInclude(x => x.TipoProducto)
+                                .Include(x => x.Inventario).ThenInclude(x => x.UnidadMedida)
+                                .Include(x => x.Inventario).ThenInclude(x => x.Estado)
+                                .Include(x => x.Estado).Include(x => x.UnidadMedida).Where(x => x.CompraId == compraId).ToListAsync();
 
             return detCompra;
         }

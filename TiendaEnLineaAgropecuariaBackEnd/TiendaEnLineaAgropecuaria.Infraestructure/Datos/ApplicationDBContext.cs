@@ -135,6 +135,14 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Datos
                 .HasForeignKey(c => c.UserId)
                 .HasConstraintName("FK_Cliente_Usuario")
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Foreign key de Pago a User
+            modelBuilder.Entity<Pago>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .HasConstraintName("FK_Pago_Usuario")
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<TipoProducto> TipoProductos { get; set; }
@@ -165,5 +173,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Datos
         public DbSet<DetalleTraslado> DetallesTraslado { get; set; }
         public DbSet<MovimientoTraslado> MovimientosTraslado { get; set; }
         public DbSet<TipoMedida> TiposMedida { get; set; }
+        public DbSet<TipoPago> TipoPagos { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
     }
 }

@@ -238,6 +238,11 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                 ModelState.AddModelError(string.Empty, e.Message);
                 return ValidationProblem();
             }
+            catch (InvalidOperationException e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return ValidationProblem();
+            }
             catch (Exception e)
             {
                 ModelState.AddModelError(string.Empty, e.Message);

@@ -174,7 +174,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
                 {
                     return Ok();
                 }
-                return BadRequest("Ha ocurrido un error en la creacion del detalle de la compra");
+                return BadRequest("Ha ocurrido un error en la actualización del detalle de la compra");
             }
             catch (KeyNotFoundException e)
             {
@@ -189,7 +189,7 @@ namespace TiendaEnLineaAgropecuariaAPI.Presentation.Controllers.V1
         }
 
         [HttpDelete("compras/{idCompra}/detalles/{idDet}")]
-        public async Task<ActionResult<DetalleCompraDTO>> Delete(int idCompra, int idDet)
+        public async Task<ActionResult> Delete(int idCompra, int idDet)
         {
             try
             {

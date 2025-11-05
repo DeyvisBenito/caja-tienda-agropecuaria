@@ -4,18 +4,14 @@ import { useParams, useRouter } from "next/navigation";
 
 import {
   Compra,
-  CompraCreacion,
   CompraUpdate,
-  DetalleCompra,
-  Proveedor,
   ProveedorCreacionNit,
 } from "@/app/lib/definitions";
 import { useValidateToken } from "@/app/lib/useValidateToken";
-import { updateCompra, updateProveedor } from "@/app/lib/api";
+import { updateCompra } from "@/app/lib/api";
 
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -26,8 +22,6 @@ export default function CompraFillData({
   compra: Compra | null;
   editable: boolean;
 }) {
-  const [proveedores, setProveedores] = useState<Proveedor | null>(null);
-  const [detallesCompra, setDetallesCompra] = useState<DetalleCompra[]>([]);
   useValidateToken();
 
   const params = useParams();
@@ -106,7 +100,7 @@ export default function CompraFillData({
             </label>
             <input
               className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-100"
-              type="number"
+              type="text"
               id="nit"
               defaultValue={compra.proveedor.nit}
               readOnly={!editable}
@@ -171,7 +165,7 @@ export default function CompraFillData({
 
             {/* Telefono */}
             <label htmlFor="telefono" className="font-medium">
-              Telefono (Todo junto):
+              Telefono:
             </label>
             <input
               className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-100"
@@ -221,7 +215,7 @@ export default function CompraFillData({
 
             {/* Compra */}
             <div className="font-medium mt-4 text-center">Compra</div>
-             {/* Vendedor */}
+            {/* Vendedor */}
             <label htmlFor="ubicacion" className="font-medium">
               Vendedor:
             </label>

@@ -9,72 +9,70 @@ import {
 import { NoSymbolIcon } from "@heroicons/react/24/outline";
 import { formatCurrency } from "@/app/lib/utils";
 import { Inventario } from "@/app/lib/definitions";
-import { useUserRole } from "@/app/lib/decodeToken";
+import { useUserRole, useUserSucursal } from "@/app/lib/decodeToken";
+import { rolEnum } from "@/app/lib/utilities/rolEnum";
 
 export default function ListaProductos({
-  inventario,
+  inventarios,
   onDeleted,
 }: {
-  inventario: Inventario[];
+  inventarios: Inventario[];
   onDeleted: (id: number) => void;
 }) {
   const role = useUserRole();
+  const sucursalId = useUserSucursal();
 
-  const inventarioAdmin = useUserRole();
+  const inventariosFiltrados = inventarios.filter((inv) => {
+    if (role === rolEnum.admin) return true; 
+    if (role === rolEnum.vendedor) return inv.sucursalId === Number(sucursalId); 
+    return false; 
+  });
 
   return (
     <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-      {inventario?.map((inventari) => (
+      {inventariosFiltrados?.map((inventario) => (
         <div
-          key={inventari.id}
+          key={inventario.id}
           className="rounded-lg bg-white shadow p-4 flex flex-col"
         >
           {/* Imagen */}
           <div className="mb-4 h-48 w-full overflow-hidden rounded-lg">
             <img
-              src={inventari.urlFoto}
-              alt={inventari.nombre}
+              src={inventario.urlFoto}
+              alt={inventario.nombre}
               className="h-full w-full object-cover"
             />
           </div>
 
           {/* Nombre */}
-          <h2 className="text-lg font-semibold mb-1">{inventari.nombre}</h2>
+          <h2 className="text-lg font-semibold mb-1">{inventario.nombre}</h2>
 
           {/* Estado */}
           <p
             className={`mb-1 font-medium ${
-              inventari.estado === "Activo" ? "text-green-600" : "text-red-600"
+              inventario.estado === "Activo" ? "text-green-600" : "text-red-600"
             }`}
           >
-            {role === "admin"
-              ? inventari.estado
-              : inventari.estado === "Activo"
-              ? "Disponible"
-              : "No disponible"}
+            {inventario.estado}
           </p>
 
-          {/* Marca */}
-          <p className="text-gray-500 mb-1">Marca: {inventari.marca}</p>
+          {/* Codigo */}
+          <p className="text-gray-500 mb-1">Codigo: {inventario.codigo}</p>
+          
+          {/* Sucursal */}
+          <p className="text-gray-500 mb-1">Sucursal: {inventario.sucursal}</p>
+
+          {/* Stock */}
+          <p className="text-gray-500 mb-1">Stock: {inventario.stock}</p>
 
           {/* Precio */}
           <p className="text-xl font-bold mb-2">
-            {formatCurrency(inventari.precio)}
+            {formatCurrency(inventario.precioVenta)}
           </p>
 
           {/* Acciones */}
           <div className="mt-auto flex gap-2 justify-end">
-            <SeeProduct id={inventari.id} />
-            {role === "admin" ? (
-              <>
-                <UpdateProduct id={inventari.id} />
-                <DeleteProduct id={inventari.id} onDeleted={onDeleted} />
-              </>
-            ) : inventari.estado === "Activo" ? (
-              <AddProductoToCart id={inventari.id} nombre={inventari.nombre} precio={inventari.precio} stock={inventari.stock}/>
-            ) : (
-              <NoSymbolIcon className="w-5 text-red-500" />
-            )}
+            <SeeProduct id={inventario.id} />
           </div>
         </div>
       ))}

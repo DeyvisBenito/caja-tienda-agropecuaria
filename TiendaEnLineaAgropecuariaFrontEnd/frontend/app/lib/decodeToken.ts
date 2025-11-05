@@ -50,3 +50,23 @@ export function useUserSucursal() {
 
     return sucursal;
 }
+
+export function useUserEmail() {
+    const [email, setEmail] = useState<string | null>(null);
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const decoded = jwtDecode<JwtPayload>(token);
+                if (decoded.Email) {
+                    setEmail(decoded.Email);
+                }
+            }
+        } catch (error) {
+            setEmail(null);
+        }
+    }, []);
+
+    return email;
+}

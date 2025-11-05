@@ -19,7 +19,10 @@ namespace TiendaEnLineaAgrepecuaria.Domain.Entidades
         public UnidadMedida? UnidadMedida { get; set; }
         public int Cantidad { get; set; }
         public int? UnidadesPorCaja { get; set; }
-        public decimal PrecioVenta { get; set; }
+        public decimal PrecioVentaUnidadMinima { get; set; }
+        public decimal Descuento { get; set; }
+        public decimal PrecioVentaConDescuentoUnidadMinima { get; set; }
+        public decimal Total { get; set; }
         public DateTime Fecha { get; set; }
     }
 }

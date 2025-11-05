@@ -28,7 +28,7 @@ export default function DetailsPage() {
     return;
   }
 
-  const [respProduct, setRespProduct] = useState<any>(null);
+  const [respProduct, setRespProduct] = useState<Inventario>();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -71,7 +71,7 @@ export default function DetailsPage() {
         Regresar
       </button>
       <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center">
-        Descripcion
+        Descripcion de Producto
       </h1>
       <ProductFillData inventario={respProduct} editable={false}/>
     </div>

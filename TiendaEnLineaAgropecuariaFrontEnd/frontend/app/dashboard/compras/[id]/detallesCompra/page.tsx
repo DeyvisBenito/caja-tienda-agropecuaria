@@ -103,6 +103,7 @@ export default function DetallesCompraPage() {
       toast.success("Inventario encontrado");
       buttonBuscarByCodigo.disabled = false;
       const inventarioData: Inventario = data as Inventario;
+      resetBuscar();
       setCrearInventarios(false);
       setInventario(inventarioData);
     } catch (error: any) {

@@ -15,7 +15,8 @@ import {
   ExclamationTriangleIcon,
   TruckIcon,
   UserIcon,
-  IdentificationIcon  
+  IdentificationIcon,
+  DocumentIcon,
 } from "@heroicons/react/24/outline";
 import { useUserRole } from "@/app/lib/decodeToken";
 
@@ -52,23 +53,25 @@ const links = [
     icon: PuzzlePieceIcon,
     onlyAdmin: true,
   },
-  {
+  /*{
     name: "Perdidas",
     href: "/dashboard/perdidas",
     icon: ExclamationTriangleIcon,
     onlyAdmin: false,
-  },
+  },*/
   {
     name: "Sucursales",
     href: "/dashboard/sucursales",
     icon: BuildingStorefrontIcon,
     onlyAdmin: true,
-  },{
+  },
+  {
     name: "Proveedores",
     href: "/dashboard/proveedores",
     icon: TruckIcon,
     onlyAdmin: true,
-  },{
+  },
+  {
     name: "Usuarios",
     href: "/dashboard/usuarios",
     icon: UserIcon,
@@ -78,6 +81,12 @@ const links = [
     name: "Clientes",
     href: "/dashboard/clientes",
     icon: IdentificationIcon,
+    onlyAdmin: true,
+  },
+  {
+    name: "Reportes",
+    href: "/dashboard/reportes",
+    icon: DocumentIcon,
     onlyAdmin: true,
   },
 ];

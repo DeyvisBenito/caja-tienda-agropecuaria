@@ -9,7 +9,7 @@ export type UserClaim = {
   value: string;
 }
 
-export type UsuarioGet ={
+export type UsuarioGet = {
   id: string,
   userName: string,
   email: string,
@@ -124,7 +124,7 @@ export type Inventario = {
 }
 
 export type InventarioCreacion = {
-  Codigo : string,
+  Codigo: string,
   Nombre: string,
   TipoProductoId: number,
   EstadoId: number,
@@ -207,6 +207,15 @@ export type Proveedor = {
   estado: string
 }
 
+export type BestProveedor = {
+  id: number,
+  nit: string,
+  nombres: string,
+  apellidos: string,
+  telefono: string,
+  cantidadCompras: number
+}
+
 export type ProveedorCreacion = {
   Nit: string,
   Nombres: string,
@@ -216,7 +225,7 @@ export type ProveedorCreacion = {
   EstadoId: number
 }
 
-export type ProveedorCreacionNit ={
+export type ProveedorCreacionNit = {
   Nit: string
 }
 
@@ -235,7 +244,7 @@ export type DetalleCompra = {
   fecha: string
 }
 
-export type DetalleCompraCreacion ={
+export type DetalleCompraCreacion = {
   CompraId: number,
   InventarioId: number | undefined,
   EstadoId: number,
@@ -255,6 +264,16 @@ export type Compra = {
   sucursal: string,
   estadoId: number,
   estado: string,
+  total: number,
+  fechaCreacion: string
+}
+
+export type CompraDelDia = {
+  id: number,
+  proveedorId: number,
+  nitProveedor: string,
+  proveedor: string,
+  sucursal: string,
   total: number,
   fechaCreacion: string
 }
@@ -290,10 +309,106 @@ export type Cliente = {
   fechaRegistro: string,
 }
 
+export type BestCliente = {
+  id: number,
+  nit: string,
+  nombres: string,
+  apellidos: string,
+  email: string | null,
+  telefono: string,
+  cantidadVentas: number,
+  totalGastado: number
+}
+
 export type ClienteCreacion = {
   Nit: string,
   Nombres: string,
   Apellidos: string,
   Email?: string,
   Telefono: string
+}
+
+export type ClienteCreacionNit = {
+  Nit: string
+}
+
+export type Venta = {
+  id: number,
+  userId: string,
+  emailUser: string,
+  clienteId: number,
+  cliente: Cliente,
+  detallesVenta: DetalleCompra[],
+  sucursalId: number,
+  sucursal: string,
+  estadoId: number,
+  estado: string,
+  total: number,
+  fechaCreacion: string
+}
+
+export type VentaDelDia = {
+  id: number,
+  clienteId: number,
+  nitCliente: string,
+  cliente: string,
+  sucursal: string,
+  total: number,
+  fechaCreacion: string
+}
+
+export type VentaCreacion = {
+  ClienteNit: string,
+  Total: number
+}
+
+export type VentaUpdate = {
+  NitCliente: string
+}
+
+export type VentaCreacionResp = {
+  id: number
+}
+
+export type VentaPago = {
+  Pago: number
+}
+
+export type respVuelto = {
+  vuelto: number
+}
+
+export type DetalleVenta = {
+  id: number,
+  ventaId: number,
+  inventarioId: number,
+  inventario: Inventario,
+  estadoId: number,
+  estado: string,
+  unidadMedidaId: number,
+  unidadMedida: string,
+  cantidad: number,
+  unidadesPorCaja: number,
+  precioVenta: number,
+  descuento: number,
+  total: number,
+  precioVentaConDescuento: number,
+  fecha: string
+}
+
+export type DetalleVentaCreacion = {
+  VentaId: number,
+  InventarioId: number | undefined,
+  EstadoId: number,
+  UnidadMedidaId: number,
+  UnidadesPorCaja: number | null,
+  Cantidad: number,
+  PrecioVenta: number,
+  Descuento: number,
+  PrecioVentaConDescuento: number,
+  Total: number
+}
+
+export type Descuento = {
+  descuento: number
 }

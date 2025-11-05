@@ -1,5 +1,5 @@
 import {
-    Product, User, Token, ProductPost, ProductsPaginated, LoginConEmailI,
+    Token, LoginConEmailI,
     Categoria, Inventario, ReseteoPasswordIn, ReseteoPasswordResponse,
     CredencialesResetearPassword, TipoProducto, Sucursal, InventarioCreacion, Carrito,
     CarritoDetails,
@@ -20,7 +20,20 @@ import {
     UsuarioGet,
     UsuarioUpdate,
     Cliente,
-    ClienteCreacion
+    ClienteCreacion,
+    Venta,
+    VentaCreacion,
+    VentaCreacionResp,
+    DetalleVenta,
+    Descuento,
+    DetalleVentaCreacion,
+    VentaUpdate,
+    VentaPago,
+    respVuelto,
+    BestCliente,
+    VentaDelDia,
+    CompraDelDia,
+    BestProveedor
 } from './definitions'
 
 // Change URL_BASE instead your Backend URL_BASE
@@ -340,7 +353,7 @@ export const getInventario = async (token: string | null): Promise<Inventario[] 
 }
 
 // get inventario with Id
-export const getInventarioById = async (token: string | null, id: string): Promise<Inventario | number> => {
+export const getInventarioById = async (token: string | null, id: string | number): Promise<Inventario | number> => {
 
     const resp = await fetch(`${URL_BASE}/v1/Inventarios/${id}`, {
         method: "GET",
@@ -1592,6 +1605,35 @@ export const getClienteById = async (token: string | null, id: string): Promise<
     return data;
 }
 
+// Get Cliente by ventaId
+export const getClienteByVentaId = async (token: string | null, ventaId: string | number): Promise<Cliente | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Clientes/venta/${ventaId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        let mensajeError = "Error al obtener el Cliente";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: Cliente = await resp.json();
+
+    return data;
+}
+
 // Update Cliente
 export const updateCliente = async (token: string | null, id: string, cliente: ClienteCreacion)
     : Promise<void | number> => {
@@ -1648,4 +1690,523 @@ export const deleteCliente = async (token: string | null, id: number): Promise<v
     }
 
     return;
+}
+
+// Ventas
+// Get ventas
+export const getVentas = async (token: string | null): Promise<Venta[] | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/Ventas`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        throw new Error("Error al cargar el historial de ventas");
+    }
+    const data: Venta[] = await resp.json();
+
+    return data;
+}
+
+// Get venta by id
+export const getVenta = async (token: string | null, id: string):
+    Promise<Venta | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Ventas/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+
+    if (!resp.ok) {
+        let mensajeError = "Error al obtener la venta";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: Venta = await resp.json();
+
+    return data;
+}
+
+// Post a Venta
+export const postVenta = async (token: string | null, venta: VentaCreacion): Promise<VentaCreacionResp | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/Ventas`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(venta)
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        let mensajeError = "Error al agregar la venta";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: VentaCreacionResp = await resp.json();
+    return data;
+}
+
+// Update venta (solo enunciados principales)
+export const updateVenta = async (token: string | null, id: string, ventaCreacion: VentaUpdate)
+    : Promise<void | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Ventas/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(ventaCreacion)
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        const data = await resp.json();
+        let mensajeError = "Error al actualizar la venta";
+
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+
+    return;
+}
+
+// Delete venta (logico)
+export const deleteVenta = async (token: string | null, id: number): Promise<void | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/Ventas/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+
+    if (resp.status === 403) {
+        return 403;
+    }
+
+    if (!resp.ok) {
+        const data = await resp.json();
+        let mensajeError = "Error al eliminar la venta";
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+
+    return;
+}
+
+//Confirmar venta
+export const procesarVenta = async (token: string | null, idVenta: string | number, tipoPagoId: string | number, pago: VentaPago): Promise<respVuelto | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/Ventas/${idVenta}/procesar/tipoPago/${tipoPagoId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(pago)
+    });
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        const data = await resp.json();
+        let mensajeError = "Error al procesar la venta";
+
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: respVuelto = await resp.json();
+
+    return data;
+}
+
+//delete Cancelar venta eliminado permanente
+export const cancelVenta = async (token: string | null, idVenta: string): Promise<void | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/Ventas/cancelVenta/${idVenta}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        const data = await resp.json();
+        let mensajeError = "Error al cancelar la venta";
+
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+
+    return;
+}
+
+// Detalle de venta
+// Get detalles de compra
+export const getDetallesVenta = async (token: string | null, ventaId: string): Promise<DetalleVenta[] | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta/byventa/${ventaId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        throw new Error("Error al cargar los detalles de la venta");
+    }
+
+    const data: DetalleVenta[] = await resp.json();
+    return data;
+}
+
+// Get detalles de venta by id
+export const getDetalleVentaById = async (token: string | null, idVenta: string | undefined, idDet: string): Promise<DetalleVenta | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta/ventas/${idVenta}/detalles/${idDet}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        throw new Error("Error al cargar el detalle de la venta");
+    }
+
+    const data: DetalleVenta = await resp.json();
+    return data;
+}
+
+// Get inventario exist en detalle de venta
+export const detalleExistInVenta = async (token: string | null, idInv: number | undefined, ventaId: string, unidadMedidaId: number | string): Promise<boolean | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta/byInventarioId/${idInv}?ventaId=${ventaId}&unidadMedidaId=${unidadMedidaId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        throw new Error("Error al cargar el detalle de la venta");
+    }
+
+    const data = await resp.json();
+    return data;
+
+}
+
+// Get inventario exist en detalle de venta distinto al que se va a actualizar
+export const detalleExistInVentaUpd = async (token: string | null, idInv: number | undefined, ventaId: string, unidadMedidaId: number | string, detId: number | string): Promise<boolean | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta/byInventarioIdUpd/${idInv}?ventaId=${ventaId}&unidadMedidaId=${unidadMedidaId}&detId=${detId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        throw new Error("Error al cargar el detalle de la venta");
+    }
+
+    const data = await resp.json();
+    return data;
+
+}
+
+// Post Detalle venta
+export const postDetalleVenta = async (token: string | null, detalle: DetalleVentaCreacion): Promise<void | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(detalle)
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        let mensajeError = "Error al agregar el detalle de la venta";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+
+    return;
+}
+
+// Put Detalle venta
+export const PutDetalleVenta = async (token: string | null, detalle: DetalleVentaCreacion, ventaId: number | string, detId: number | string): Promise<void | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta/ventas/${ventaId}/detalles/${detId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(detalle)
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        let mensajeError = "Error al actualizar el detalle de la venta";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+
+    return;
+}
+
+//delete Detalle venta with Id
+export const deleteDetalleVenta = async (token: string | null, idVenta: string, idDet: number): Promise<void | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/DetalleVenta/ventas/${idVenta}/detalles/${idDet}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        const data = await resp.json();
+        let mensajeError = "Error al eliminar el detalle de la venta";
+
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+
+    return;
+}
+
+// Conversiones
+// Get descuento por conversion
+export const getDescuento = async (token: string | null, origenId: number, destinoId: number): Promise<Descuento | number> => {
+    const resp = await fetch(`${URL_BASE}/v1/Conversiones/descuento/origen/${origenId}/destino/${destinoId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+    if (!resp.ok) {
+        throw new Error("Error al cargar el descuento de la venta");
+    }
+
+    const data: Descuento = await resp.json();
+    return data;
+}
+
+// Reportes
+// Get Ventas del dia
+export const getVentasDelDia = async (token: string | null):
+    Promise<VentaDelDia[] | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Reportes/ventasDelDia`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+
+    if (!resp.ok) {
+        let mensajeError = "Error al obtener las ventas del día";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: VentaDelDia[] = await resp.json();
+
+    return data;
+}
+
+// Get Compras del dia
+export const getComprasDelDia = async (token: string | null):
+    Promise<CompraDelDia[] | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Reportes/getComprasDelDia`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+
+    if (!resp.ok) {
+        let mensajeError = "Error al obtener las compras del día";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: CompraDelDia[] = await resp.json();
+
+    return data;
+}
+
+// Get Best Clientes por venta
+export const getBestClientesPorVenta = async (token: string | null):
+    Promise<BestCliente[] | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Reportes/bestClientesPorVentas`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+
+    if (!resp.ok) {
+        let mensajeError = "Error al obtener los clientes";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: BestCliente[] = await resp.json();
+
+    return data;
+}
+
+// Get Best Proveedores por compras
+export const getBestProveedoresPorCompra = async (token: string | null):
+    Promise<BestProveedor[] | number> => {
+
+    const resp = await fetch(`${URL_BASE}/v1/Reportes/bestProveedores`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (resp.status === 403) {
+        return 403;
+    }
+
+    if (!resp.ok) {
+        let mensajeError = "Error al obtener los proveedores";
+        const data = await resp.json();
+        if (data.errors && Object.keys(data.errors).length > 0) {
+            const firstKey = Object.keys(data.errors)[0];
+            mensajeError = data.errors[firstKey][0];
+        }
+
+        throw new Error(mensajeError);
+    }
+    const data: BestProveedor[] = await resp.json();
+
+    return data;
 }

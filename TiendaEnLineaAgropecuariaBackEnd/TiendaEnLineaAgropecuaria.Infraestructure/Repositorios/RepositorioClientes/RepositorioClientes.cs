@@ -37,6 +37,20 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioClie
             return cliente;
         }
 
+        public async Task<Cliente> GetByVentaId(int id)
+        {
+            var venta = await dbContext.Ventas.Include(x => x.Cliente).FirstOrDefaultAsync(x => x.Id == id);
+            if (venta is null)
+            {
+                throw new KeyNotFoundException("Venta no encontrada");
+            }
+            if (venta.Cliente is null)
+            {
+                throw new KeyNotFoundException("Cliente no encontrado en la venta");
+            }
+
+            return venta.Cliente;
+        }
         public async Task<bool> NewCliente(Cliente cliente)
         {
             var nit = cliente.Nit.ToLower();

@@ -15,12 +15,16 @@ using TiendaEnLineaAgropecuaria.Application.UseCases.ClientesUseCases.ClientesCo
 using TiendaEnLineaAgropecuaria.Application.UseCases.ClientesUseCases.ClientesQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.ComprasUseCases.ComprasCommands;
 using TiendaEnLineaAgropecuaria.Application.UseCases.ComprasUseCases.ComprasQuerys;
+using TiendaEnLineaAgropecuaria.Application.UseCases.ConversionesUseCases.ConversionesQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.DetCompraUseCases.DetCompraCommands;
 using TiendaEnLineaAgropecuaria.Application.UseCases.DetCompraUseCases.DetCompraQuerys;
+using TiendaEnLineaAgropecuaria.Application.UseCases.DetVentaUseCases.DetVentaCommands;
+using TiendaEnLineaAgropecuaria.Application.UseCases.DetVentaUseCases.DetVentaQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.InventariosCommands;
 using TiendaEnLineaAgropecuaria.Application.UseCases.InventariosUseCases.InventariosQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.ProveedoresUseCases.ProveedoresCommands;
 using TiendaEnLineaAgropecuaria.Application.UseCases.ProveedoresUseCases.ProveedoresQuerys;
+using TiendaEnLineaAgropecuaria.Application.UseCases.ReportesUseCases.ReportesQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.SucursalesUseCases.SucursalesCommands;
 using TiendaEnLineaAgropecuaria.Application.UseCases.SucursalesUseCases.SucursalesQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.TiposMedidaUseCases.TiposMedidaQuerys;
@@ -28,6 +32,7 @@ using TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.Tipos
 using TiendaEnLineaAgropecuaria.Application.UseCases.TiposProductoUseCases.TiposProductoQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.UnidadMedidaUseCases.UnidadMedidaQuerys;
 using TiendaEnLineaAgropecuaria.Application.UseCases.UsuariosUseCases.UsuariosCommands;
+using TiendaEnLineaAgropecuaria.Application.UseCases.VentasUseCases.VentasCommands;
 using TiendaEnLineaAgropecuaria.Application.UseCases.VentasUseCases.VentasQuerys;
 using TiendaEnLineaAgropecuaria.Infraestructure.Datos;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioAuth;
@@ -37,9 +42,12 @@ using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioCarritoD
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioCategorias;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioClientes;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioCompras;
+using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioConversiones;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioDetCompra;
+using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioDetVenta;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioInventario;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioProveedores;
+using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioReportes;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipoMedida;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioTipoProductos;
 using TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioUnidadMedida;
@@ -154,6 +162,9 @@ builder.Services.AddTransient<IRepositorioUnidadMedida, RepositorioUnidadMedida>
 builder.Services.AddTransient<IRepositorioDetCompra, RepositorioDetCompra>();
 builder.Services.AddTransient<IRepositorioClientes, RepositorioClientes>();
 builder.Services.AddTransient<IRepositorioVentas, RepositorioVentas>();
+builder.Services.AddTransient<IRepositorioDetVenta, RepositorioDetVenta>();
+builder.Services.AddTransient<IRepositorioConversiones, RepositorioConversiones>();
+builder.Services.AddTransient<IRepositorioReportes, RepositorioReportes>();
 
 // Casos de uso
 // Casos de uso Login y Registro
@@ -216,24 +227,41 @@ builder.Services.AddTransient<DeleteProveedor>();
 builder.Services.AddTransient<GetAllDetCompra>();
 builder.Services.AddTransient<GetAllDetCompraByCompraId>();
 builder.Services.AddTransient<GetDetCompraById>();
+builder.Services.AddTransient<GetDetByInvId>();
 builder.Services.AddTransient<PostDetCompra>();
 builder.Services.AddTransient<PutDetCompra>();
 builder.Services.AddTransient<DeleteDetCompra>();
-builder.Services.AddTransient<GetDetByInvId>();
 // Casos de uso de Clientes
 builder.Services.AddTransient<GetAllClientes>();
 builder.Services.AddTransient<GetClienteById>();
+builder.Services.AddTransient<GetClienteByVentaId>();
 builder.Services.AddTransient<PostCliente>();
 builder.Services.AddTransient<PutCliente>();
 builder.Services.AddTransient<DeleteCliente>();
 // Casos de uso Ventas
 builder.Services.AddTransient<GetAllVentas>();
 builder.Services.AddTransient<GetVentaById>();
-//builder.Services.AddTransient<PostCompras>();
-//builder.Services.AddTransient<PutCompras>();
-//builder.Services.AddTransient<DeleteCompras>();
-//builder.Services.AddTransient<CancelCompra>();
-//builder.Services.AddTransient<ProcesarCompra>();
+builder.Services.AddTransient<PostVenta>();
+builder.Services.AddTransient<PutVenta>();
+builder.Services.AddTransient<DeleteVenta>();
+builder.Services.AddTransient<CancelVenta>();
+builder.Services.AddTransient<ProcesarVenta>();
+// Casos de uso de Detalles de Venta
+builder.Services.AddTransient<GetAllDetVentas>();
+builder.Services.AddTransient<GetAllDetVentaByVentaId>();
+builder.Services.AddTransient<GetDetVentaById>();
+builder.Services.AddTransient<GetDetVentaByInvId>();
+builder.Services.AddTransient<GetDetVentaByInvIdUpd>();
+builder.Services.AddTransient<PostDetVenta>();
+builder.Services.AddTransient<PutDetVenta>();
+builder.Services.AddTransient<DeleteDetVenta>();
+// Casos de uso de conversiones
+builder.Services.AddTransient<GetDescuentoByConversion>();
+// Casos de uso de reportes
+builder.Services.AddTransient<GetBestClientesPorVentas>();
+builder.Services.AddTransient<GetVentasDelDia>();
+builder.Services.AddTransient<GetComprasDelDia>();
+builder.Services.AddTransient<GetBestProveedores>();
 
 // Servicios extras
 builder.Services.AddTransient<CrearToken>();

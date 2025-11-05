@@ -51,11 +51,7 @@ export default function TablaCompras({
                     <p className="text-sm text-gray-500">{compra.sucursal}</p>
                     <p className="text-sm text-gray-500">
                       Q.
-                      {compra.detallesCompra.reduce(
-                        (total, detalle) =>
-                          total + detalle.cantidad * detalle.precioCosto,
-                        0
-                      )}
+                      {compra.total.toFixed(2)}
                     </p>
                     <p className="text-sm text-gray-500">
                       {
@@ -79,12 +75,19 @@ export default function TablaCompras({
                     </p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    {compra.estadoId === estados.Pendiente ? (
-                      <ContinuoCompra id={compra.id} />
-                    ) : null}
-                    <SeeCompra id={compra.id} />
-                    <UpdateCompra id={compra.id} />
-                    <DeleteCompra id={compra.id} onDeleted={onDeleted} />
+                    {rol &&
+                      (rol === "vendedor" ? (
+                        <>
+                          {compra.estadoId === estados.Pendiente ? (
+                            <ContinuoCompra id={compra.id} />
+                          ) : null}
+                          <SeeCompra id={compra.id} />
+                          <UpdateCompra id={compra.id} />
+                          <DeleteCompra id={compra.id} onDeleted={onDeleted} />
+                        </>
+                      ) : null)}
+
+                    {rol !== "vendedor" && <SeeCompra id={compra.id} />}
                   </div>
                 </div>
               </div>
@@ -138,12 +141,7 @@ export default function TablaCompras({
                     {compra.sucursal}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    Q.
-                    {compra.detallesCompra.reduce(
-                      (total, detalle) =>
-                        total + detalle.cantidad * detalle.precioCosto,
-                      0
-                    )}
+                    Q. {compra.total.toFixed(2)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {new Date(compra.fechaCreacion).toISOString().split("T")[0]}

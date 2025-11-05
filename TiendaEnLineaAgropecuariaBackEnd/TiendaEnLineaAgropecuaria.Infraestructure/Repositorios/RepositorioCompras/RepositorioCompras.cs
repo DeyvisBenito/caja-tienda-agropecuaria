@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiendaEnLineaAgrepecuaria.Domain.Entidades;
 using TiendaEnLineaAgrepecuaria.Domain.Interfaces;
+using TiendaEnLineaAgropecuaria.Application.UseCases.VentasUseCases.VentasCommands;
 using TiendaEnLineaAgropecuaria.Infraestructure.Datos;
 using TiendaEnLineaAgropecuaria.Infraestructure.Servicios;
 
@@ -40,6 +41,7 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioComp
                                 .Include(x => x.DetallesCompra!)
                                     .ThenInclude(d => d.Inventario)
                                         .ThenInclude(i => i!.UnidadMedida)
+                                .OrderByDescending(x => x.Id)
                                 .ToListAsync();
 
 
@@ -166,6 +168,14 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioComp
             {
                 throw new InvalidOperationException("El estado 'Eliminado' no existe en la base de datos.");
             }
+            if(compraDelete.EstadoId == (int)EstadosEnum.Pendiente)
+            {
+                var detallesCompra = await dbContext.DetallesCompra.Where(x => x.CompraId == compraDelete.Id).ToListAsync();
+                dbContext.RemoveRange(detallesCompra);
+                dbContext.Remove(compraDelete);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
 
             // Eliminado logico, aun existe el registro en la base de datos
             compraDelete.EstadoId = estadoEliminado.Id;
@@ -190,21 +200,24 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioComp
         // Post de confirmar compra
         public async Task<bool> ProcesarCompra(int idCompra, int idSucursal)
         {
-            var compraExist = await dbContext.Compras.FirstOrDefaultAsync(x => x.Id == idCompra);
-            if (compraExist is null)
-            {
-                throw new KeyNotFoundException("La compra a confirmar no existe");
-            }
+            decimal total = 0;
             var sucursalExist = await dbContext.Sucursales.AnyAsync(x => x.Id == idSucursal);
             if (!sucursalExist)
             {
                 throw new KeyNotFoundException("La sucursal a usar no existe");
             }
+            var compraExist = await dbContext.Compras.FirstOrDefaultAsync(x => x.Id == idCompra && x.SucursalId == idSucursal 
+                                                                            && x.EstadoId == (int)EstadosEnum.Pendiente);
+            if (compraExist is null)
+            {
+                throw new KeyNotFoundException("La compra a confirmar no existe");
+            }
+            
 
             var detCompra = await dbContext.DetallesCompra.Where(x => x.CompraId == idCompra)
                         .Include(x => x.Inventario).ThenInclude(x => x!.TipoProducto).ThenInclude(x => x!.TipoMedida)
                         .ToListAsync();
-            if (detCompra is null)
+            if (detCompra is null || detCompra.Count <= 0)
             {
                 throw new KeyNotFoundException("No puede confirmar una compra sin productos");
             }
@@ -414,17 +427,23 @@ namespace TiendaEnLineaAgropecuaria.Infraestructure.Repositorios.RepositorioComp
                           .ExecuteSqlInterpolatedAsync($@"EXEC SP_Procesar_Compra @idCompra={idCompra}, @idSucursal={idSucursal},
                            @idDetalle = {det.Id}, @precioVenta = {precioVentaPorUniMinima}, @cantidad={cantidadEnUnMinima}, 
                            @precioCosto = {precioCostoPorUnidMinima}");
+
+                    total = total + (det.Cantidad * det.PrecioCosto);
                 }
+
+                compraExist.EstadoId = (int)EstadosEnum.Finalizado;
+                compraExist.Total = total;
+                await dbContext.SaveChangesAsync();
+
                 await transaction.CommitAsync();
+
+                return true;
             }
             catch
             {
                 await transaction.RollbackAsync();
                 throw new Exception("Ha ocurrido un error al procesar la compra");
-            }
-            compraExist.EstadoId = (int)EstadosEnum.Finalizado;
-            await dbContext.SaveChangesAsync();
-            return true;
+            }            
         }
     }
 }

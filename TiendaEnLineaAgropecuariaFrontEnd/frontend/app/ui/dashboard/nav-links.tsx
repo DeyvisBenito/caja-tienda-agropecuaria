@@ -92,7 +92,7 @@ const links = [
 ];
 
 export default function NavLinks() {
-  const pathname = usePathname();
+  const pathname = usePathname()?.replace(/\/$/, "");
   const role = useUserRole();
 
   const linksVisibles = links
